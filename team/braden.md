@@ -1,0 +1,1 @@
+My name is Braden Castillo, and I am a fifth-year CS major. Some ideas for the project is creating a web app using React and Next.js.
