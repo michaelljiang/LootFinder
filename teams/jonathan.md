@@ -1,0 +1,1 @@
+My name is Jonathan, and I have some experience working in Agile teams with technologies like React. I hope to help implement a feature of the app that allows for live chat between someone giving something away and someone picking something up.
