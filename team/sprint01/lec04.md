@@ -1,4 +1,4 @@
-# Lect03 Meeting Notes - 1/15/25
+# Lect04 Meeting Notes - 1/22/25
 ## Type of Meeting: Stand Up
 ## Attendance
 - Michael Jiang     [x]
