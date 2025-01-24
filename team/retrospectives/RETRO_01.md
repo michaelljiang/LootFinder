@@ -1,15 +1,15 @@
 # Date of Retrospective: 01/24/25
 
 * Led by: Tyler Chou
-* Present: Max Chang, Braden Castillo, Michael Jiang, Ajay Liu, Tyler Chou, Awin Zhang
-* Absent: Jonathan Herring
+* Present: Max Chang, Jonathan Herring, Michael Jiang, Ajay Liu, Tyler Chou, Awin Zhang
+* Absent: Braden Castillo
 
 ## Action item
 
 * a goal: Assigning and setting deadlines for tickets
 * a change/experiment: Approving pull requests and code reviews
 * __ reviewed by ___ and ___:
-    * Max, Ajay, Tyler, Awin, Jonathan, Michael, Braden
+    * Max, Ajay, Tyler, Awin, Braden, Michael, Jonathan
 * Add a screenshot of front-end change in PR
 * Start commenting code
 * a measurement: # of pull requests in review column shouldnt exceed 3
