@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import { auth } from '@/firebase'; // Import Firebase Auth
+import UserProfile from '@/views/UserProfile.vue';
 
 const routes = [
   {
@@ -20,6 +21,12 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
+    path: '/profile',
+    name: 'UserProfile',
+    component: UserProfile,
+    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
 ];
 
