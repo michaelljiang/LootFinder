@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Dashboard from '@/views/Dashboard.vue';
+import CreateOffer from '@/views/CreateOffer.vue';
 import { auth } from '@/firebase'; // Import Firebase Auth
 
 const routes = [
@@ -19,6 +20,12 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
+    path: '/create-offer',
+    name: 'Create Offer',
+    component: CreateOffer,
     meta: { requiresAuth: true }, // Route requires authentication
   },
 ];
