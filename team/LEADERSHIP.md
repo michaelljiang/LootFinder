@@ -7,4 +7,4 @@
 | Fri 01/17 | Max Chang       | Led Sprint planning meeting for Sprint01 |
 | Wed 01/22 | Awin Zhang      | Led standup                              |
 | Fri 01/24 | Tyler Chou      | Led first Retro                          |
-| Fri 01/24 | Ajay Liu        | Led first Retro                          |
+| Fri 01/24 | Ajay Liu        | Led Sprint planning meeting for Sprint02 |
