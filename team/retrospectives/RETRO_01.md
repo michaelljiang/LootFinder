@@ -12,21 +12,18 @@
     * Max, Ajay, Tyler, Awin, Braden, Michael, Jonathan
 * Add a screenshot of front-end change in PR
 * Start commenting code
-* a measurement: # of pull requests in review column shouldnt exceed 3
-
-## Optional
-
-* Record anything else you think the team might want to remember from this retro
+* a measurement: # of pull requests in the review column shouldnt exceed 3
 
 ## Retro Assessment
 
-* A brief description of what retro outline or process you used.
-* A brief assessment of how it went.
-* What advice would you give to the next person leading a retro based on what you learned today?
+I started by asking everyone on the team what they are currently working on and how that is going. I do this to potentially spark more ideas on how the team has been doing and what should change. Then, I started the start/stop/continue template. I ask each team member what they think about what we should start/stop/continue doing.
+
+The retrospective went well in my opinion, everyone contributed valuable insights and we have a very good idea of what we should be doing going forward.
+
+For the next person, I would advise following the start/stop/continue template because that worked well this retrospective.
 
 ## Experiment/Change
 
-* A brief description of what constitutes your change/experiment
-* A brief assessment of how its results (did it improve things? move the needle at all?)
-* A decision going forward: keep the change, revert to previous procedure, make a new change? 
+We are experimenting with who will review the pull requests. Last week we had a system that people who have time will just review the changes but it did not work well. So this week the each person will have 2 designated members who will review their pull requests, and they will ping them on slack when the do a pull request so that they know to review it. 
+After experimenting with it, our tickets that are awaiting review decreased significantly and the speed is faster too, so we will be continuing this change.
 
