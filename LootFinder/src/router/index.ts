@@ -43,7 +43,7 @@ const router = createRouter({
 });
 
 // Navigation Guard for Protected Routes
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const currentUser = auth.currentUser;
 
