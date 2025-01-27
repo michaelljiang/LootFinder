@@ -5,6 +5,7 @@ import Dashboard from '@/views/Dashboard.vue';
 import CreateOffer from '@/views/CreateOffer.vue';
 import { auth } from '@/firebase'; // Import Firebase Auth
 import UserProfile from '@/views/UserProfile.vue';
+import BrowseOffers from '@/views/BrowseOffers.vue';
 
 const routes = [
   {
@@ -33,6 +34,12 @@ const routes = [
     path: '/profile',
     name: 'UserProfile',
     component: UserProfile,
+    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
+  },
+  {
+    path: '/browse-offers',
+    name: 'Browse Offers',
+    component: BrowseOffers,
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
 ];
