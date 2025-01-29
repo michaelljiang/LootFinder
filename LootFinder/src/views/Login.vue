@@ -7,7 +7,7 @@
 
 <script>
   import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-  import { auth, googleProvider } from '@/firebase';
+  import { auth, googleProvider, db } from '@/firebase';
   import {getFirestore, doc, setDoc, getDoc} from 'firebase/firestore';
 
   export default {
@@ -19,7 +19,6 @@
 
           const currentUser = result.user;
           // Retrieve Firestore Instance
-          const db = getFirestore();
           const userDocRef = doc(db, 'user', currentUser.uid);
           const userDoc = await getDoc(userDocRef);
 
