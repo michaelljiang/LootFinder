@@ -2,7 +2,7 @@
 
 * Led by: Tyler Chou
 * Present: Max Chang, Jonathan Herring, Michael Jiang, Ajay Liu, Tyler Chou, Awin Zhang
-* Absent: Braden Castillo
+* Absent: Braden Castillo (participated online via Slack)
 
 ## Action item
 
