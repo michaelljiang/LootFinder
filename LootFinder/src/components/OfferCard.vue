@@ -1,17 +1,25 @@
 <template>
   <div
-    class="max-w-xs overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800"
+    class="w-72 h-96 overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 flex flex-col"
   >
     <div class="px-4 py-2">
-      <h1 class="text-xl font-bold text-gray-800 uppercase dark:text-white">
+      <h1
+        class="text-xl font-bold text-gray-800 uppercase dark:text-white truncate"
+      >
         {{ title }}
       </h1>
-      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
         {{ description }}
       </p>
     </div>
 
-    <img class="object-cover w-full h-48 mt-2" :src="image" :alt="title" />
+    <div class="flex-1 relative">
+      <img
+        class="absolute inset-0 w-full h-full object-cover"
+        :src="image"
+        :alt="title"
+      />
+    </div>
 
     <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
       <h1 class="text-lg font-bold text-white">{{ price }}</h1>
