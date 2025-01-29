@@ -1,8 +1,5 @@
 <template>
-  <nav
-    x-data="{ isOpen: false }"
-    class="relative bg-white shadow dark:bg-gray-800"
-  >
+  <nav class="relative bg-white shadow dark:bg-gray-800">
     <div class="container px-6 py-4 mx-auto">
       <div class="lg:flex lg:items-center lg:justify-between">
         <div class="flex items-center justify-between">
@@ -17,14 +14,13 @@
           <!-- Mobile menu button -->
           <div class="flex lg:hidden">
             <button
-              x-cloak
               @click="isOpen = !isOpen"
               type="button"
               class="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
               aria-label="toggle menu"
             >
               <svg
-                x-show="!isOpen"
+                v-if="!isOpen"
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6"
                 fill="none"
@@ -40,7 +36,7 @@
               </svg>
 
               <svg
-                x-show="isOpen"
+                v-else
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6"
                 fill="none"
@@ -59,7 +55,6 @@
         </div>
 
         <div
-          x-cloak
           :class="[
             isOpen
               ? 'translate-x-0 opacity-100 '
@@ -131,44 +126,50 @@
 </template>
 
 <script>
-import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { ref, onMounted } from 'vue';
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signInWithPopup,
+    GoogleAuthProvider,
+  } from 'firebase/auth';
+  import { ref, onMounted } from 'vue';
 
-export default {
-  name: 'Navbar',
-  setup() {
-    const user = ref(null);
-    const auth = getAuth();
+  export default {
+    name: 'Navbar',
+    setup() {
+      const user = ref(null);
+      const isOpen = ref(false);
+      const auth = getAuth();
 
-    // Watch for authentication state changes
-    onMounted(() => {
-      onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-          user.value = {
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-          };
-        } else {
-          user.value = null;
-        }
+      // Watch for authentication state changes
+      onMounted(() => {
+        onAuthStateChanged(auth, (currentUser) => {
+          if (currentUser) {
+            user.value = {
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL,
+            };
+          } else {
+            user.value = null;
+          }
+        });
       });
-    });
 
-    // Login method
-    const login = async () => {
-      try {
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        user.value = {
-          displayName: result.user.displayName,
-          photoURL: result.user.photoURL,
-        };
-      } catch (error) {
-        console.error('Login failed:', error.message);
-      }
-    };
+      // Login method
+      const login = async () => {
+        try {
+          const provider = new GoogleAuthProvider();
+          const result = await signInWithPopup(auth, provider);
+          user.value = {
+            displayName: result.user.displayName,
+            photoURL: result.user.photoURL,
+          };
+        } catch (error) {
+          console.error('Login failed:', error.message);
+        }
+      };
 
-    return { user, login };
-  },
-};
+      return { user, isOpen, login };
+    },
+  };
 </script>
