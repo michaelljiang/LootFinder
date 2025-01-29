@@ -6,6 +6,7 @@ import CreateOffer from '@/views/CreateOffer.vue';
 import { auth } from '@/firebase'; // Import Firebase Auth
 import UserProfile from '@/views/UserProfile.vue';
 import BrowseOffers from '@/views/BrowseOffers.vue';
+import UpdateOffers from '@/views/UpdateOffers.vue';
 
 const routes = [
   {
@@ -41,6 +42,12 @@ const routes = [
     name: 'Browse Offers',
     component: BrowseOffers,
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
+  },
+  {
+    path: '/update-offers',
+    name: 'UpdateOffers',
+    component: UpdateOffers,
+    meta: { requiresAuth: true },
   },
 ];
 
