@@ -10,7 +10,7 @@
             <img
               class="w-auto h-6 sm:h-7"
               src="https://www.svgrepo.com/show/275527/treasure-chest.svg"
-              alt=""
+              alt="Logo"
             />
           </router-link>
 
@@ -58,7 +58,6 @@
           </div>
         </div>
 
-        <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
         <div
           x-cloak
           :class="[
@@ -81,18 +80,6 @@
             >
               Dashboard
             </router-link>
-            <!-- <router-link
-              to="/Dashboard"
-              class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              Browse Topics
-            </router-link> -->
-            <!-- <router-link
-              to="/Dashboard"
-              class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              Random Item
-            </router-link> -->
             <router-link
               to="/create-offer"
               class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -102,47 +89,40 @@
           </div>
 
           <div class="flex items-center mt-4 lg:mt-0">
-            <button
-              class="hidden mx-4 text-gray-600 transition-colors duration-300 transform lg:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none"
-              aria-label="show notifications"
-            >
-              <svg
-                class="w-6 h-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <!-- Display login button if user is not logged in -->
+            <template v-if="!user">
+              <button
+                @click="login"
+                class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring"
               >
-                <path
-                  d="M15 17H20L18.5951 15.5951C18.2141 15.2141 18 14.6973 18 14.1585V11C18 8.38757 16.3304 6.16509 14 5.34142V5C14 3.89543 13.1046 3 12 3C10.8954 3 10 3.89543 10 5V5.34142C7.66962 6.16509 6 8.38757 6 11V14.1585C6 14.6973 5.78595 15.2141 5.40493 15.5951L4 17H9M15 17V18C15 19.6569 13.6569 21 12 21C10.3431 21 9 19.6569 9 18V17M15 17H9"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
+                Login
+              </button>
+            </template>
 
-            <button
-              type="button"
-              class="flex items-center focus:outline-none"
-              aria-label="toggle profile dropdown"
-            >
-              <div
-                class="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full"
+            <!-- Display profile picture if user is logged in -->
+            <template v-else>
+              <button
+                type="button"
+                class="flex items-center focus:outline-none"
+                aria-label="toggle profile dropdown"
               >
-                <router-link to="/profile">
-                  <img
-                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                    class="object-cover w-full h-full"
-                    alt="avatar"
-                  />
-                </router-link>
-              </div>
+                <div
+                  class="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full"
+                >
+                  <router-link to="/profile">
+                    <img
+                      :src="user?.photoURL || 'https://via.placeholder.com/150'"
+                      class="object-cover w-full h-full"
+                      alt="avatar"
+                    />
+                  </router-link>
+                </div>
 
-              <h3 class="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
-                Khatab wedaa
-              </h3>
-            </button>
+                <h3 class="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
+                  {{ user?.displayName || 'Guest' }}
+                </h3>
+              </button>
+            </template>
           </div>
         </div>
       </div>
@@ -151,7 +131,44 @@
 </template>
 
 <script>
-  export default {
-    name: 'Navbar',
-  };
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { ref, onMounted } from 'vue';
+
+export default {
+  name: 'Navbar',
+  setup() {
+    const user = ref(null);
+    const auth = getAuth();
+
+    // Watch for authentication state changes
+    onMounted(() => {
+      onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+          user.value = {
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+          };
+        } else {
+          user.value = null;
+        }
+      });
+    });
+
+    // Login method
+    const login = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        user.value = {
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+        };
+      } catch (error) {
+        console.error('Login failed:', error.message);
+      }
+    };
+
+    return { user, login };
+  },
+};
 </script>
