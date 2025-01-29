@@ -84,6 +84,10 @@
 </template>
 
 <script>
+  import { getFirestore, collection, addDoc, serverTimestamp, writeBatch, doc } from 'firebase/firestore';
+  import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+  import { db, storage } from '@/firebase';
+  import { getAuth } from 'firebase/auth';
   export default {
     data() {
       return {
@@ -93,14 +97,57 @@
           price: null,
           negotiable: false,
           image: null,
+          sellerId: null,
+          active: false,
         },
       };
     },
     methods: {
-      handleSubmit() {
-        console.log('Form submitted:', this.form);
-        // Handle form data submission logic here
-        this.$router.push('/dashboard');
+      async handleSubmit() {
+        try {
+          let imageUrl = '';
+          if (this.form.image) {
+            const uniqueFileName = `${Date.now()}-${this.form.image.name}`;
+            const storageRef = ref(storage, `offer/${uniqueFileName}`);
+            await uploadBytes(storageRef, this.form.image);
+            imageUrl = await getDownloadURL(storageRef);
+          }
+
+          // current user instance
+          const auth = getAuth();
+          const currentUser = auth.currentUser;
+
+          // reference to the user document of current user
+          const userRef = doc(db, 'user', currentUser.uid);
+
+          const batch = writeBatch(db);
+          // reference to the offer collection
+          const offerRef = doc(collection(db, 'offer'));
+          batch.set(offerRef,{
+            title: this.form.title,
+            description: this.form.description,
+            price: this.form.price,
+            negotiable: this.form.negotiable,
+            image: imageUrl,
+            sellerId: userRef,
+            createdAt: new Date(),
+            active: true,
+          });
+
+          // reference to the user offers sub-collection
+          const userOfferRef = doc(collection(userRef, 'offers'), offerRef.id);
+          batch.set(userOfferRef, {
+            offer: offerRef,
+          });
+
+          await batch.commit();
+
+          this.$router.push('/dashboard');
+          console.log('Form submitted:', this.form);
+        }
+        catch ( error ) {
+          console.error('Error creating offer ', error);
+        }
       },
       handleFileUpload(event) {
         this.form.image = event.target.files[0];
