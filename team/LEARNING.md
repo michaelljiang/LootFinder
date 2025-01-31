@@ -17,6 +17,12 @@
 # Assessment
 Based on our current skill/knowledge level of our tech stack, our team has realized that we need to develop our knowledge on Vue and further strengthen our skills in Typescript.
 
+# Help Posts
+- Jonathan: Vue tutorial
+- Michael: Vite tutorial
+- Brayden: Fetch Remote Branches Tutorial
+
+
 # Learning Plan
 
 - Jonathan: Will watch tutorials on YouTube, read docs, and ask ChatGPT to develop knowledge on Vite/Vue
