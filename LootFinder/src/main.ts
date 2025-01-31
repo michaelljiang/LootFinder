@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router'; // Import Vue Router
 import { auth } from './firebase'; // Import Firebase
 import { onAuthStateChanged } from 'firebase/auth';
+import './style.css'; //  Import global styles
 
 let app: any;
 
