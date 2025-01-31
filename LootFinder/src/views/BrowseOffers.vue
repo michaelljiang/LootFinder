@@ -6,7 +6,7 @@
     <div class="flex flex-wrap justify-center items-stretch gap-6">
       <OfferCard
         v-for="item in offers"
-        :key="index"
+        :key="item.id"
         :title="item.title"
         :description="item.description"
         :price="item.price"
@@ -17,56 +17,39 @@
 </template>
 
 <script>
-  import {
-    getFirestore,
-    collection,
-    query,
-    where,
-    getDocs,
-    doc,
-    updateDoc,
-  } from 'firebase/firestore';
-  import { getAuth } from 'firebase/auth';
-  import { db, storage } from '@/firebase';
-  import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase';
+import OfferCard from '@/components/OfferCard.vue';
 
-  import OfferCard from '@/components/OfferCard.vue';
-
-  export default {
-    name: 'BrowseOffers',
-    components: {
-      OfferCard,
-    },
-    data() {
-      return {
-        offers: [],
-        editingOffer: null,
-        editForm: {
-          title: '',
-          description: '',
-          price: '',
-          negotiable: false,
-          image: '',
-          imageFile: null,
-        },
-      };
-    },
-    async created() {
-      await this.fetchUserOffers();
-    },
-    methods: {
-      async fetchUserOffers() {
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
-        if (!currentUser) return;
-
-        const q = query(collection(db, 'offer'));
+export default {
+  name: 'BrowseOffers',
+  components: {
+    OfferCard,
+  },
+  data() {
+    return {
+      offers: [],
+    };
+  },
+  async created() {
+    await this.fetchActiveOffers();
+  },
+  methods: {
+    async fetchActiveOffers() {
+      try {
+        // Query only offers where active is true
+        const q = query(collection(db, 'offer'), where('active', '==', true));
         const querySnapshot = await getDocs(q);
-        this.offers = querySnapshot.docs.map((doc) => ({
+        
+        // Store filtered offers in data
+        this.offers = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
         }));
-      },
+      } catch (error) {
+        console.error('Error fetching active offers:', error.message);
+      }
     },
-  };
+  },
+};
 </script>
