@@ -12,3 +12,6 @@
   --color-textBody: #242424;
   --color-textAccent: #ffd543;
 }
+html {
+  scroll-behavior: smooth;
+}
