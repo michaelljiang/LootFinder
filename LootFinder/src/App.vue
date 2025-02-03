@@ -1,7 +1,7 @@
 <template>
   <main>
     <Navbar />
-    <div class = "container min-h-screen">
+    <div class="container min-h-screen w-full mx-auto">
       <router-view></router-view>
     </div>
     <Footer />
@@ -16,7 +16,7 @@
     name: 'App',
     components: {
       Navbar,
-      Footer
+      Footer,
     },
   };
 </script>
