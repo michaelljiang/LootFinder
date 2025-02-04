@@ -1,35 +1,34 @@
 <template>
-  <div class="p-6 bg-gray-100 min-h-screen">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+  <div class="p-4 sm:p-6 bg-gray-100 min-h-screen">
+    <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">
       Browse Offers
     </h1>
 
     <!-- Filter/Search Inputs -->
     <div
-      class="mb-6 flex flex-col md:flex-row gap-4 justify-center items-center"
+      class="mb-6 flex flex-col gap-4 sm:flex-row sm:justify-center sm:items-center"
     >
       <input
         type="text"
         v-model="searchTerm"
         placeholder="Search by title"
-        class="p-2 border border-gray-300 rounded"
+        class="w-full sm:w-64 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
       />
       <input
         type="number"
         v-model.number="minPrice"
         placeholder="Min Price"
-        class="p-2 border border-gray-300 rounded"
+        class="w-full sm:w-32 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
       />
       <input
         type="number"
         v-model.number="maxPrice"
         placeholder="Max Price"
-        class="p-2 border border-gray-300 rounded"
+        class="w-full sm:w-32 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
       />
-      <!-- Reset Filters Button -->
       <button
         @click="resetFilters"
-        class="p-2 bg-gray-200 rounded hover:bg-gray-300"
+        class="w-full sm:w-auto p-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition"
       >
         Reset Filters
       </button>
@@ -105,7 +104,7 @@
         }
       },
       resetFilters() {
-        // Reset the filter values to their defaults
+        // Reset filter values to their defaults
         this.searchTerm = '';
         this.minPrice = null;
         this.maxPrice = null;
