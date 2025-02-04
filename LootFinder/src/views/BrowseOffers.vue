@@ -26,6 +26,13 @@
         placeholder="Max Price"
         class="p-2 border border-gray-300 rounded"
       />
+      <!-- Reset Filters Button -->
+      <button
+        @click="resetFilters"
+        class="p-2 bg-gray-200 rounded hover:bg-gray-300"
+      >
+        Reset Filters
+      </button>
     </div>
 
     <!-- Offers List -->
@@ -96,6 +103,12 @@
         } catch (error) {
           console.error('Error fetching active offers:', error.message);
         }
+      },
+      resetFilters() {
+        // Reset the filter values to their defaults
+        this.searchTerm = '';
+        this.minPrice = null;
+        this.maxPrice = null;
       },
     },
   };
