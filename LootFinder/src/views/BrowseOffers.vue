@@ -80,7 +80,9 @@
           const matchesMaxPrice =
             this.maxPrice != null ? offer.price <= this.maxPrice : true;
 
-          return matchesSearch && matchesMinPrice && matchesMaxPrice;
+          return (
+            !offer.sold && matchesSearch && matchesMinPrice && matchesMaxPrice
+          );
         });
       },
     },
