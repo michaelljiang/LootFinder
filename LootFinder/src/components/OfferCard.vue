@@ -28,30 +28,49 @@
       >
         Add to cart
       </button>
+      <button
+        @click="openChat"
+        class="px-2 py-1 text-xs font-semibold text-white uppercase bg-blue-500 rounded hover:bg-blue-600 transition"
+      >
+        Message Seller
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'OfferCard',
-    props: {
-      title: {
-        type: String,
-        required: true,
-      },
-      description: {
-        type: String,
-        required: true,
-      },
-      price: {
-        type: String,
-        required: true,
-      },
-      image: {
-        type: String,
-        required: true,
-      },
+export default {
+  name: "OfferCard",
+  props: {
+    id: {
+      type: String,
+      required: true,
     },
-  };
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    sellerId: {
+      type: String,
+      required: true,
+    },
+  },
+  methods: {
+    openChat() {
+      this.$router.push(`/chat/${this.sellerId}`);
+    },
+  },
+};
 </script>
