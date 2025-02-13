@@ -7,6 +7,7 @@ import { auth } from '@/firebase'; // Import Firebase Auth
 import UserProfile from '@/views/UserProfile.vue';
 import BrowseOffers from '@/views/BrowseOffers.vue';
 import UpdateOffers from '@/views/UpdateOffers.vue';
+import ChatView from "@/views/ChatView.vue";
 
 const routes = [
   {
@@ -47,6 +48,12 @@ const routes = [
     path: '/update-offers',
     name: 'UpdateOffers',
     component: UpdateOffers,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/chat/:userId",
+    name: "ChatView",
+    component: ChatView,
     meta: { requiresAuth: true },
   },
 ];
