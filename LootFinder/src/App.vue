@@ -16,7 +16,7 @@
     name: 'App',
     components: {
       Navbar,
-      Footer
+      Footer,
     },
   };
 </script>
