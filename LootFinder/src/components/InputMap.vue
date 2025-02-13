@@ -1,5 +1,5 @@
 <template>
-    <GoogleMap api-key="AIzaSyCXOqgEseOG9MfVkqWSdh0-EfQr9NAcya4" :zoom="15" :center="center" @click="placeMarker" style="width: 75%; height: 400px; border-radius: 1rem; overflow: hidden; border-width: 2px; border-color: #834848">
+    <GoogleMap :api-key="mapsKey" :zoom="15" :center="center" @click="placeMarker" style="width: 75%; height: 400px; border-radius: 1rem; overflow: hidden; border-width: 2px; border-color: #834848">
         <Marker v-if="markerVisible" :options="markerOptions"/>
     </GoogleMap>
 </template>
@@ -7,12 +7,19 @@
 <script>
     import { defineComponent } from 'vue';
     import { GoogleMap, Marker } from 'vue3-google-map';
+    import config from '@/config';
 
     export default defineComponent({
         name: 'InputMap',
         components: {
             GoogleMap,
             Marker,
+        },
+        setup(){
+            const mapsKey = config.mapsKey;
+            return {
+                mapsKey,
+            };
         },
         data() {
             return {
