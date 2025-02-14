@@ -8,6 +8,7 @@ import UserProfile from '@/views/UserProfile.vue';
 import BrowseOffers from '@/views/BrowseOffers.vue';
 import UpdateOffers from '@/views/UpdateOffers.vue';
 import ChatView from "@/views/ChatView.vue";
+import SearchBar from '@/views/SearchBar.vue';
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/search-bar',
+    name: 'Search Bar',
+    component: SearchBar,
   },
   {
     path: '/dashboard',
