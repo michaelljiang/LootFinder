@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase';
 export default {
     data() {
         return {
@@ -16,11 +18,25 @@ export default {
         };
     },
     methods: {
-        search() {
-        // Dummy search logic, replace with actual API call
-            const items = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
-            this.results = items.filter(item => item.toLowerCase().includes(this.query.toLowerCase()));
+        async searchUsers() {
+        if (!this.query.trim()) {
+            this.results = [];
+            return;
         }
+
+        try {
+            const usersRef = collection(db, "user");
+            const q = query(usersRef, where("displayName", ">=", this.query), where("displayName", "<=", this.query + "\uf8ff"));
+            const querySnapshot = await getDocs(q);
+
+            this.results = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+            }));
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
+    }
     }
 };
 </script>
