@@ -26,3 +26,9 @@
 - I used ChatGPT, and Github Copilot to implement "Mark as Sold" functionality.
 - Github Copilot integrated great with VS Code, but it didn't style my component to my liking. It simply copied the styling of surrounding elements verbatim, which worked well with the button but not for the label.
 - I wanted to be able to toggle between "Mark as sold" and "Mark as unsold", but I couldn't communicate that to Github Copilot even with the built-in Copilot chatbox. I copied my file to ChatGPT and it gave me a working solution, only needing minor touches to styling.
+
+# Jonathan:
+- I used Github Copilot (with OpenAI's o1 model) with to create a Vitest unit test for a frontend component
+- It came up with a pretty good unit test and understood exactly what the component was trying to display
+- The test was not functional right away upon running the command provided by the model, but after providing error messages, it was able to diagnose that I was missing some imports and dependencies
+- I will probably use large language models for assistance with creating unit tests almost every time in the future now
