@@ -15,3 +15,9 @@
 - It did format it in a visually pleasing way but required further instructions to properly give me a version that was consistent with original instructions.
 - The solution was partially correct with me having to manually edit the rest of the code.
 - I will probably use ChatGPT in the future as a starting point for what kind of formatting that I would like.
+
+# Braden:
+- Used ChatGPT to help me design and style the frontend UI for our messaging feature.
+- It came up with a pretty decent starting design, although there were some parts of it that I didn't really like.
+- It was very useful as it gave me a starting point that I could work off of and personalize to my liking. I can definitely see myself using it again in this way, especially when I have no clue how I want to design something and when I need some inspiration.
+- In order to ensure the ouput was satisfactory, I manually changed some things myself, and I also gave it more directions until it produced me something that I liked/desired.
