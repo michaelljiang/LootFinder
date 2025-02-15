@@ -49,6 +49,7 @@ export default {
         await this.fetchUsers();
     },
     methods: {
+<<<<<<< HEAD
         async fetchUsers() {
             try {
                 const usersRef = collection(db, "user");
@@ -61,7 +62,27 @@ export default {
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
+=======
+        async searchUsers() {
+        if (!this.query.trim()) {
+            this.results = [];
+            return;
+>>>>>>> d303ba4 (Update SearchBar.vue)
         }
+
+        try {
+            const usersRef = collection(db, "user");
+            const q = query(usersRef, where("displayName", ">=", this.query), where("displayName", "<=", this.query + "\uf8ff"));
+            const querySnapshot = await getDocs(q);
+
+            this.results = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+            }));
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
+    }
     }
 };
 </script>
