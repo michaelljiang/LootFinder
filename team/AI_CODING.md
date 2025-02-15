@@ -21,3 +21,8 @@
 - It came up with a pretty decent starting design, although there were some parts of it that I didn't really like.
 - It was very useful as it gave me a starting point that I could work off of and personalize to my liking. I can definitely see myself using it again in this way, especially when I have no clue how I want to design something and when I need some inspiration.
 - In order to ensure the ouput was satisfactory, I manually changed some things myself, and I also gave it more directions until it produced me something that I liked/desired.
+
+# Ajay:
+- I used ChatGPT, and Github Copilot to implement "Mark as Sold" functionality.
+- Github Copilot integrated great with VS Code, but it didn't style my component to my liking. It simply copied the styling of surrounding elements verbatim, which worked well with the button but not for the label.
+- I wanted to be able to toggle between "Mark as sold" and "Mark as unsold", but I couldn't communicate that to Github Copilot even with the built-in Copilot chatbox. I copied my file to ChatGPT and it gave me a working solution, only needing minor touches to styling.
