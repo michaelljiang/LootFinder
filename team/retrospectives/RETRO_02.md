@@ -1,4 +1,4 @@
-# Date of Retrospective: 01/24/25
+# Date of Retrospective: 2/19/2025
 
 * Led by: Jonathan
 * Present: Max, Michael, Ajay, Tyler, Awin, Braden
