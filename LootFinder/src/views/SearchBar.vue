@@ -1,10 +1,14 @@
 <template>
     <div class="container">
         <input v-model="query" type="text" placeholder="Search for users" @input="search" class="search-bar" />
+        
+    </div>
+    <div class="flex flex-wrap justify-center items-stretch gap-6">
         <ul v-if="results.length">
             <li v-for="user in results" :key="user.id">{{ user.displayName }}</li>
         </ul>
     </div>
+
 </template>
 
 <script>
