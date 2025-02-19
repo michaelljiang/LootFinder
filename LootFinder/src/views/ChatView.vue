@@ -47,6 +47,7 @@
     doc,
     getDoc,
     addDoc,
+    updateDoc,
     onSnapshot,
     serverTimestamp,
     orderBy,
@@ -142,11 +143,18 @@
         if (!newMessage.value.trim()) return;
 
         const messagesRef = collection(db, 'chats', chatId, 'messages');
+        const chatRef = doc(db, 'chats', chatId);
 
         await addDoc(messagesRef, {
           senderId: currentUser.value.uid,
           text: newMessage.value,
           createdAt: serverTimestamp(),
+        });
+
+        // ✅ Update lastMessage & lastMessageTimestamp in chat document
+        await updateDoc(chatRef, {
+          lastMessage: newMessage.value,
+          lastMessageTimestamp: serverTimestamp(),
         });
 
         newMessage.value = '';
