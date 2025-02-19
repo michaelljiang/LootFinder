@@ -2,41 +2,42 @@
     <div class="container">
         <input v-model="query" type="text" placeholder="Search for users" @input="search" class="search-bar" />
         <ul v-if="results.length">
-            <li v-for="(result, index) in results" :key="index">{{ result }}</li>
+            <li v-for="user in results" :key="user.id">{{ user.displayName }}</li>
         </ul>
     </div>
 </template>
 
 <script>
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/firebase';
-export default {
-    data() {
-        return {
-            query: '',
-            results: []
-        };
-    },
-    methods: {
-        async searchUsers() {
-        if (!this.query.trim()) {
-            this.results = [];
-            return;
-        }
+    import { collection, query, where, getDocs } from 'firebase/firestore';
+    import { db } from '@/firebase';
 
-        try {
-            const usersRef = collection(db, "user");
-            const q = query(usersRef, where("displayName", ">=", this.query), where("displayName", "<=", this.query + "\uf8ff"));
-            const querySnapshot = await getDocs(q);
+    export default {
+        data() {
+            return {
+                query: '',
+                results: []
+            };
+        },
+        methods: {
+            async searchUsers() {
+            if (!this.query.trim()) {
+                this.results = [];
+                return;
+            }
 
-            this.results = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-            }));
-        } catch (error) {
-            console.error("Error fetching users:", error);
+            try {
+                const usersRef = collection(db, "user");
+                const q = query(usersRef);
+                const querySnapshot = await getDocs(q);
+
+                this.results = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+                }));
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
         }
-    }
     }
 };
 </script>
