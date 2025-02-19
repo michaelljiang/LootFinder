@@ -1,6 +1,8 @@
 <template>
   <div class="p-4 min-h-screen bg-gray-100 flex flex-col">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Chat</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">
+      Chat with {{ seller?.displayName || 'Seller' }}
+    </h1>
 
     <div v-if="loading" class="text-gray-500">Loading chat...</div>
     <div v-else class="flex flex-col flex-1">
@@ -52,17 +54,18 @@
   } from 'firebase/firestore';
   import { db } from '@/firebase';
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
-  import { ref, onMounted, watch } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
 
   export default {
     name: 'Chat',
     setup() {
       const route = useRoute();
-      const chatId = route.params.chatId; // Get chatId from URL
+      const chatId = route.params.chatId;
       const messages = ref([]);
       const newMessage = ref('');
       const currentUser = ref(null);
+      const seller = ref(null);
       const loading = ref(true);
 
       const auth = getAuth();
@@ -71,7 +74,8 @@
         onAuthStateChanged(auth, (user) => {
           if (user) {
             currentUser.value = user;
-            fetchMessages();
+            fetchChatDetails(); // First, fetch chat details
+            fetchMessages(); // Then, listen for chat messages
           } else {
             currentUser.value = null;
             messages.value = [];
@@ -79,7 +83,42 @@
         });
       });
 
-      // Fetch chat messages in real-time
+      // Step 1: Fetch chat details (to get sellerId)
+      const fetchChatDetails = async () => {
+        if (!chatId) {
+          console.error('Chat ID missing');
+          return;
+        }
+
+        const chatRef = doc(db, 'chats', chatId);
+        const chatSnap = await getDoc(chatRef);
+
+        if (chatSnap.exists()) {
+          const chatData = chatSnap.data();
+          fetchSellerDetails(chatData.sellerId); // Fetch seller name
+        } else {
+          console.error('Chat not found!');
+        }
+      };
+
+      // Step 2: Fetch seller details using sellerId
+      const fetchSellerDetails = async (sellerId) => {
+        if (!sellerId) {
+          console.error('Seller ID missing');
+          return;
+        }
+
+        const sellerRef = doc(db, 'user', sellerId);
+        const sellerSnap = await getDoc(sellerRef);
+
+        if (sellerSnap.exists()) {
+          seller.value = sellerSnap.data(); // Store seller's data (including name)
+        } else {
+          console.error('Seller not found in users collection!');
+        }
+      };
+
+      // Step 3: Fetch chat messages in real-time
       const fetchMessages = () => {
         if (!chatId) {
           console.error('Chat ID missing');
@@ -98,7 +137,7 @@
         });
       };
 
-      // Send a message
+      // Step 4: Send a message
       const sendMessage = async () => {
         if (!newMessage.value.trim()) return;
 
@@ -118,6 +157,7 @@
         newMessage,
         sendMessage,
         currentUser,
+        seller,
         loading,
       };
     },
