@@ -151,7 +151,7 @@
           createdAt: serverTimestamp(),
         });
 
-        // ✅ Update lastMessage & lastMessageTimestamp in chat document
+        // Update lastMessage & lastMessageTimestamp in chat document
         await updateDoc(chatRef, {
           lastMessage: newMessage.value,
           lastMessageTimestamp: serverTimestamp(),
