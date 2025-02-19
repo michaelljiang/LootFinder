@@ -39,38 +39,85 @@
 </template>
 
 <script>
-export default {
-  name: "OfferCard",
-  props: {
-    id: {
-      type: String,
-      required: true,
+  import {
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    serverTimestamp,
+  } from 'firebase/firestore';
+  import { db } from '@/firebase';
+  import { useRouter } from 'vue-router';
+  import { getAuth, onAuthStateChanged } from 'firebase/auth';
+  import { ref, onMounted } from 'vue';
+
+  export default {
+    name: 'OfferCard',
+    props: {
+      id: { type: String, required: true }, // itemId
+      title: { type: String, required: true },
+      description: { type: String, required: true },
+      price: { type: Number, required: true },
+      image: { type: String, required: true },
+      sellerId: { type: String, required: true },
     },
-    title: {
-      type: String,
-      required: true,
+    setup(props) {
+      const router = useRouter();
+      const auth = getAuth();
+      const currentUser = ref(null);
+
+      // Track authentication state
+      onMounted(() => {
+        onAuthStateChanged(auth, (user) => {
+          currentUser.value = user;
+        });
+      });
+
+      const openChat = async () => {
+        if (!currentUser.value) {
+          alert('You must be logged in to message the seller.');
+          return;
+        }
+
+        const buyerId = currentUser.value.uid;
+        const itemId = props.id;
+        const sellerId = props.sellerId;
+
+        try {
+          const chatsRef = collection(db, 'chats');
+          const q = query(
+            chatsRef,
+            where('buyerId', '==', buyerId),
+            where('sellerId', '==', sellerId),
+            where('itemId', '==', itemId)
+          );
+
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            // Chat exists, navigate to it
+            const chatId = querySnapshot.docs[0].id;
+            router.push(`/chat/${chatId}`);
+          } else {
+            // Create a new chat
+            const chatRef = await addDoc(chatsRef, {
+              buyerId,
+              sellerId,
+              itemId,
+              createdAt: serverTimestamp(),
+              lastMessage: '',
+              lastMessageTimestamp: serverTimestamp(),
+            });
+
+            router.push(`/chat/${chatRef.id}`);
+          }
+        } catch (error) {
+          console.error('Error starting chat:', error.message);
+        }
+      };
+
+      return { openChat };
     },
-    description: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: String,
-      required: true,
-    },
-    sellerId: {
-      type: String,
-      required: true,
-    },
-  },
-  methods: {
-    openChat() {
-      this.$router.push(`/chat/${this.sellerId}`);
-    },
-  },
-};
+  };
 </script>

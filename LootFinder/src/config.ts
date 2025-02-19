@@ -1,4 +1,5 @@
 export default {
+  mapsKey: 'AIzaSyCveSF9OnuC4MYIzBGLKEPeIic3prbxgjg',
   apiKey: 'AIzaSyDjGNk-GxJfFi1dCAxSIdvQAJnrIHwhkcU',
   authDomain: 'loot-finder-7063b.firebaseapp.com',
   projectId: 'loot-finder-7063b',

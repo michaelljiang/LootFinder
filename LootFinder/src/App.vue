@@ -1,7 +1,7 @@
 <template>
   <main>
     <Navbar />
-    <div class="container min-h-screen w-full mx-auto">
+    <div class = "container mx-auto min-h-screen">
       <router-view></router-view>
     </div>
     <Footer />
