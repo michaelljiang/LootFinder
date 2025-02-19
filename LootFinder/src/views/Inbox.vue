@@ -78,48 +78,82 @@
 
         try {
           const userId = currentUser.value.uid;
-          const q = query(
+          let chatList = [];
+
+          // Fetch chats where user is the buyer
+          const buyerChatsQuery = query(
             collection(db, 'chats'),
-            where('buyerId', '==', userId)
+            where('buyerId', '==', userId),
+            orderBy('lastMessageTimestamp', 'desc')
+          );
+          const buyerChatsSnapshot = await getDocs(buyerChatsQuery);
+          chatList = await processChatDocs(
+            buyerChatsSnapshot,
+            userId,
+            chatList
           );
 
-          const querySnapshot = await getDocs(q);
-          const chatList = [];
+          // Fetch chats where user is the seller
+          const sellerChatsQuery = query(
+            collection(db, 'chats'),
+            where('sellerId', '==', userId),
+            orderBy('lastMessageTimestamp', 'desc')
+          );
+          const sellerChatsSnapshot = await getDocs(sellerChatsQuery);
+          chatList = await processChatDocs(
+            sellerChatsSnapshot,
+            userId,
+            chatList
+          );
 
-          for (const chatDoc of querySnapshot.docs) {
-            const chatData = chatDoc.data();
-
-            // Fetch the other user's name
-            const otherUserId =
-              chatData.sellerId === userId
-                ? chatData.buyerId
-                : chatData.sellerId;
-            const userRef = doc(db, 'user', otherUserId);
-            const userSnap = await getDoc(userRef);
-            const otherUserName = userSnap.exists()
-              ? userSnap.data().displayName
-              : 'Unknown User';
-
-            // Fetch the item details
-            const itemRef = doc(db, 'offer', chatData.itemId);
-            const itemSnap = await getDoc(itemRef);
-            const itemImage = itemSnap.exists() ? itemSnap.data().image : null;
-
-            chatList.push({
-              id: chatDoc.id,
-              otherUserName,
-              lastMessage: chatData.lastMessage,
-              lastMessageTimestamp: chatData.lastMessageTimestamp,
-              itemImage,
-            });
-          }
-
-          chats.value = chatList;
+          // Sort combined chats manually in case some don't have timestamps
+          chats.value = chatList.sort((a, b) => {
+            if (!a.lastMessageTimestamp) return 1; // Move empty chats to the bottom
+            if (!b.lastMessageTimestamp) return -1;
+            return (
+              b.lastMessageTimestamp.toMillis() -
+              a.lastMessageTimestamp.toMillis()
+            );
+          });
+          chats.value = chatList.filter(
+            (chat) => chat.otherUserId !== userId && chat.lastMessage !== ''
+          );
         } catch (error) {
           console.error('Error fetching conversations:', error);
         } finally {
           loading.value = false;
         }
+      };
+
+      const processChatDocs = async (querySnapshot, userId, chatList) => {
+        for (const chatDoc of querySnapshot.docs) {
+          const chatData = chatDoc.data();
+
+          // Get the other user's ID (buyer or seller)
+          const otherUserId =
+            chatData.sellerId === userId ? chatData.buyerId : chatData.sellerId;
+
+          // Fetch the other user's name from Firestore (from "user" collection)
+          const userRef = doc(db, 'user', otherUserId);
+          const userSnap = await getDoc(userRef);
+          const otherUserName = userSnap.exists()
+            ? userSnap.data().displayName || 'Unknown User'
+            : 'Unknown User';
+
+          // Fetch the item details from Firestore (from "offer" collection)
+          const itemRef = doc(db, 'offer', chatData.itemId);
+          const itemSnap = await getDoc(itemRef);
+          const itemImage = itemSnap.exists() ? itemSnap.data().image : null;
+
+          chatList.push({
+            id: chatDoc.id,
+            otherUserName,
+            lastMessage: chatData.lastMessage,
+            lastMessageTimestamp: chatData.lastMessageTimestamp,
+            itemImage,
+          });
+        }
+        return chatList;
       };
 
       const goToChat = (chatId) => {
