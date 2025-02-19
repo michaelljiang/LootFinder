@@ -39,10 +39,12 @@
       <OfferCard
         v-for="item in filteredOffers"
         :key="item.id"
+        :id="item.id"
         :title="item.title"
         :description="item.description"
         :price="item.price"
         :image="item.image"
+        :sellerId="item.sellerId"
       />
     </div>
   </div>
@@ -51,6 +53,7 @@
 <script>
   import { collection, query, where, getDocs } from 'firebase/firestore';
   import { db } from '@/firebase';
+  import { fetchItemWithSeller } from '@/firebaseService'; // Import the function
   import OfferCard from '@/components/OfferCard.vue';
 
   export default {
@@ -73,10 +76,9 @@
           const matchesSearch = this.searchTerm
             ? offer.title.toLowerCase().includes(this.searchTerm.toLowerCase())
             : true;
-          // Check if the offer's price is greater than or equal to minPrice (if provided)
+          // Check if the offer's price is within the min and max price range
           const matchesMinPrice =
             this.minPrice != null ? offer.price >= this.minPrice : true;
-          // Check if the offer's price is less than or equal to maxPrice (if provided)
           const matchesMaxPrice =
             this.maxPrice != null ? offer.price <= this.maxPrice : true;
 
@@ -92,21 +94,24 @@
     methods: {
       async fetchActiveOffers() {
         try {
-          // Query only offers where active is true
           const q = query(collection(db, 'offer'), where('active', '==', true));
           const querySnapshot = await getDocs(q);
 
-          // Store the offers in the component's data
-          this.offers = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
+          // Fetch all items with resolved sellerId
+          const items = await Promise.all(
+            querySnapshot.docs.map(async (doc) => {
+              const resolvedItem = await fetchItemWithSeller(doc.id);
+              return resolvedItem ? { id: doc.id, ...resolvedItem } : null;
+            })
+          );
+
+          // Remove null values (failed fetches)
+          this.offers = items.filter((item) => item !== null);
         } catch (error) {
           console.error('Error fetching active offers:', error.message);
         }
       },
       resetFilters() {
-        // Reset filter values to their defaults
         this.searchTerm = '';
         this.minPrice = null;
         this.maxPrice = null;

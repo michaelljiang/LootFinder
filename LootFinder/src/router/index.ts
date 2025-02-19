@@ -7,7 +7,8 @@ import { auth } from '@/firebase'; // Import Firebase Auth
 import UserProfile from '@/views/UserProfile.vue';
 import BrowseOffers from '@/views/BrowseOffers.vue';
 import UpdateOffers from '@/views/UpdateOffers.vue';
-import ChatView from "@/views/ChatView.vue";
+import ChatView from '@/views/ChatView.vue';
+import Inbox from '@/views/Inbox.vue';
 
 const routes = [
   {
@@ -50,11 +51,23 @@ const routes = [
     component: UpdateOffers,
     meta: { requiresAuth: true },
   },
+  // {
+  //   path: "/chat/:userId",
+  //   name: "ChatView",
+  //   component: ChatView,
+  //   meta: { requiresAuth: true },
+  // },
   {
-    path: "/chat/:userId",
-    name: "ChatView",
+    path: '/chat/:chatId',
+    name: 'Chat',
     component: ChatView,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/inbox',
+    name: 'Inbox',
+    component: Inbox,
+    meta: { requiresAuth: true }, // Route requires authentication
   },
 ];
 
