@@ -22,11 +22,15 @@
 export default {
 name: "ProfileCard",
 props: {
+<<<<<<< HEAD
     id: {
         type: String,
         required: true,
     },
     displayName: {
+=======
+    username: {
+>>>>>>> cfb29f9 (s)
         type: String,
         required: true,
     },
