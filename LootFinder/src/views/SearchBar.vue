@@ -1,84 +1,75 @@
 <template>
-    <div class="container">
-        <input v-model="query" type="text" placeholder="Search for users" @input="search" class="search-bar" />
-        
+    <div class="p-4 sm:p-6 bg-gray-100 min-h-screen">
+        <div class="mb-6 flex flex-col sm:flex-row sm:justify-center sm:items-center">
+            <input 
+                v-model="query" 
+                type="text" 
+                placeholder="Search for users" 
+                class="w-full sm:w-64 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300" />
+        </div>
+        <div class="flex flex-wrap justify-center items-stretch gap-6">
+                    <ProfileCard 
+                        v-for="user in results"
+                        :username="user.username" 
+                        :email="user.email" 
+                        :title="user.title" 
+                        :image="user.image" 
+                        :sellerId="user.sellerId" 
+                    />
+        </div>
     </div>
-    <div class="flex flex-wrap justify-center items-stretch gap-6">
-        <ul v-if="results.length">
-            <li v-for="user in results" :key="user.id">{{ user.displayName }}</li>
-        </ul>
-    </div>
-
 </template>
 
 <script>
-    import { collection, query, where, getDocs } from 'firebase/firestore';
+    import { collection, query, orderBy, startAt, endAt, getDocs, where } from 'firebase/firestore';
     import { db } from '@/firebase';
+    import ProfileCard from '@/components/ProfileCard.vue';
 
     export default {
+        name: 'SearchBar',
+        components: {
+            ProfileCard,
+        },
         data() {
             return {
                 query: '',
                 results: []
             };
         },
+        computed: {
+        filteredUsers() {
+            return this.results.filter(user => {
+                // Check if the user's displayName includes the search term (case insensitive)
+                const matchesSearch = this.query
+                    ? user.displayName.toLowerCase().includes(this.query.toLowerCase())
+                    : true;
+                return matchesSearch;
+                });
+            }
+        },
+        async created() {
+            await this.searchUsers();
+        },
         methods: {
             async searchUsers() {
-            if (!this.query.trim()) {
-                this.results = [];
-                return;
-            }
+                try {
+                    const usersRef = collection(db, "user");
+                    // Firestore queries are case-sensitive, so we need to fetch all and filter manually
+                    const q = query(usersRef);
+                    const querySnapshot = await getDocs(q);
 
-            try {
-                const usersRef = collection(db, "user");
-                const q = query(usersRef);
-                const querySnapshot = await getDocs(q);
-
-                this.results = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-                }));
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            }
+                    // Filter users locally (case insensitive search)
+                    this.results = querySnapshot.docs.map(doc => ({ 
+                            id: doc.id, 
+                            ...doc.data(),
+                        }));
+                        
+                } catch (error) {
+                    console.error("Error fetching users:", error);
+                }
         }
-    }
-};
+        }
+    };
 </script>
 
-<style scoped>
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin-top: -50px;
-}
 
-.search-bar {
-    width: 100%;
-    max-width: 500px; /* Equivalent to sm:w-64 */
-    padding: 8px; /* Equivalent to p-2 */
-    border: 1px solid #d1d5db; /* Equivalent to border-gray-300 */
-    border-radius: 4px; /* Equivalent to rounded */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Equivalent to shadow-sm */
-    outline: none; /* Equivalent to focus:outline-none */
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.search-bar:focus {
-  border-color: #93c5fd; /* Equivalent to focus:border-blue-300 */
-  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.5); /* Equivalent to focus:ring */
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
-}
-
-li {
-    padding: 5px 0;
-}
-</style>
