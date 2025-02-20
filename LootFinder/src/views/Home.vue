@@ -35,11 +35,14 @@
           class="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20"
         >
           Post an offer.
-          <a href="/create-offer" class="font-semibold text-[#ea7643]">
+          <button
+            @click="isLoggedIn ? redirectToCreateOffer() : loginWithGoogle()"
+            class="relative font-semibold text-[#ea7643] px-3 py-1 transition duration-200 hover:text-[#eb8e65]"
+          >
             <span class="absolute inset-0" aria-hidden="true"></span>
-            Try it out!
+            Get Started
             <span aria-hidden="true">&rarr;</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -182,6 +185,9 @@
       },
       redirectToBrowseOffers() {
         this.$router.push('/browse-offers'); // Change to your desired redirect page
+      },
+      redirectToCreateOffer() {
+        this.$router.push('/create-offer'); // Change to your desired redirect page
       },
     },
   };
