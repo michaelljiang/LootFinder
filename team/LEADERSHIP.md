@@ -8,3 +8,14 @@
 | Wed 01/22 | Awin Zhang      | Led standup                              |
 | Fri 01/24 | Tyler Chou      | Led first Retro                          |
 | Fri 01/24 | Ajay Liu        | Led Sprint planning meeting for Sprint02 |
+
+
+- Product Owner                    : Tyler
+- Scrum Master                     : Awin
+- Testing/QA Coordinator           : Jonathan
+- Retro 3 Leader                   : Brayden
+- UX Coordinator                   : Brayden
+- Design Document Coordinator      : Awin & Ajay
+- Deployment Document Coordinator  : Max
+- User Manual Coordiantor          : Michael
+- Final Presentation Leader        : Ajay
