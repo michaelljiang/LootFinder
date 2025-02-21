@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{vue,ts,js,json,html,css,scss}\""
+    "format": "prettier --write \"src/**/*.{vue,ts,js,json,html,css,scss}\"",
+    "test": "vitest"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.0",
