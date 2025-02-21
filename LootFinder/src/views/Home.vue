@@ -30,9 +30,9 @@
     </div>
 
     <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+      <div class="sm:mb-8 sm:flex sm:justify-center">
         <div
-          class="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+        class="relative flex items-center mx-auto gap-2 rounded-full px-4 py-2 text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 w-max"   
         >
           Post an offer.
           <button
@@ -40,7 +40,7 @@
             class="relative font-semibold text-[#ea7643] px-3 py-1 transition duration-200 hover:text-[#eb8e65]"
           >
             <span class="absolute inset-0" aria-hidden="true"></span>
-            Get Started
+            Try it out!
             <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
