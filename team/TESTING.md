@@ -8,6 +8,22 @@ We used **Vitest** as the testing framework for our project. Vitest is a fast an
 
 Our approach to testing involves writing unit tests for individual components to ensure they behave as expected. We use the `@vue/test-utils` library to mount components and interact with them in a test environment.
 
+## Running Tests
+
+To run the tests, follow these steps:
+
+1. Ensure you have all dependencies installed by running:
+   ```bash
+   npm install
+   ```
+
+2. Run the tests using the following command:
+   ```bash
+   npm run test
+   ```
+
+This will execute all the test files in the project and display the results in the terminal.
+
 ## Unit Test Example
 
 Below is an example of a unit test for the `BrowseOffers.vue` component. This test verifies that the component correctly filters offers based on a search term, minimum price, and maximum price.
