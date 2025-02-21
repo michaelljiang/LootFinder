@@ -21,3 +21,5 @@ I recommend continuing the start/stop/continue template, as it is very easy to d
 ## Experiment/Change
 
 Our group decided on experimenting with creating more detailed/descriptive PRs and branch names in order to address the issue of long wait times for PRs to get merged to main. Previously, we stated that branch names should only be a number, indicating the associated issue in the Kanban board. In this meeting, we came to the conclusion that this, along with less descriptive PRs at times, contributed to longer PR approval times. In this next sprint, we will include more detailed descriptions in our PRs, and we will format our titles (more or less) as follows: XX-descriptor1-desccriptor2.
+
+After putting this experiment to the test, we all head easier times understanding pull requests more quickly and were able to approve them at a faster rate than before, and the number of pull requests did not exceed 3. We decided that this change is worth keeping, so we will continue to practice it in future sprints.
