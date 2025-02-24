@@ -22,7 +22,11 @@
 export default {
 name: "ProfileCard",
 props: {
-    username: {
+    id: {
+        type: String,
+        required: true,
+    },
+    displayName: {
         type: String,
         required: true,
     },
