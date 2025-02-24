@@ -70,6 +70,12 @@
               Browse Offers
             </router-link>
             <router-link
+              to="/browse-bounties"
+              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+            >
+              Browse Bounties
+            </router-link>
+            <router-link
               to="/dashboard"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
@@ -80,6 +86,12 @@
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Create Offer
+            </router-link>
+            <router-link
+              to="/create-bounty"
+              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+            >
+              Create Bounty
             </router-link>
             <router-link
               to="/update-offers"
