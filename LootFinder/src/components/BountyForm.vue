@@ -2,8 +2,13 @@
   <div
     class="form-container mx-auto p-6 rounded-2xl shadow-lg border-border border-2"
   >
+    <AIDisclaimerModal
+      :show="showModal"
+      @confirm="confirmSubmit"
+      @cancel="showModal = false"
+    />
     <form @submit.prevent="handleSubmit" class="space-y-4">
-      <!-- ************************** AI-Generated Image Placeholder ********************************* -->
+      <!-- ************************** AI-Generated Image Placeholder *********************************
       <div class="flex flex-col items-center">
         <div
           class="flex flex-col justify-center items-center border-2 border-dashed w-11/12 rounded-2xl bg-gray-200"
@@ -17,7 +22,7 @@
             class="rounded-xl object-cover w-40 h-40 mt-2"
           />
         </div>
-      </div>
+      </div> -->
 
       <!-- ************************** Title ********************************* -->
       <div class="flex flex-col items-center">
@@ -110,10 +115,11 @@
   import { db } from '@/firebase';
   import { getAuth } from 'firebase/auth';
   import InputMap from '@/components/InputMap.vue';
+  import AIDisclaimerModal from '@/components/AIDisclaimerModal.vue';
 
   export default {
     name: 'BountyForm',
-    components: { InputMap },
+    components: { InputMap, AIDisclaimerModal },
     data() {
       return {
         form: {
@@ -127,6 +133,7 @@
           active: false,
         },
         locationError: '',
+        showModal: false,
       };
     },
     methods: {
@@ -140,16 +147,20 @@
           this.locationError = 'Please select a location.';
           return;
         }
-        try {
-          // Assume AI-generated image placeholder
-          this.form.image = 'https://via.placeholder.com/150';
+        // Show the modal instead of submitting directly
+        this.showModal = true;
+      },
 
-          // Get current user instance
+      async confirmSubmit() {
+        try {
+          // Close the modal
+          this.showModal = false;
+
+          // Original submission logic
+          this.form.image = 'https://via.placeholder.com/150';
           const auth = getAuth();
           const currentUser = auth.currentUser;
           const userRef = doc(db, 'user', currentUser.uid);
-
-          // Batch write to Firestore db
           const batch = writeBatch(db);
           const bountyRef = doc(collection(db, 'bounty'));
 
@@ -167,7 +178,6 @@
 
           await batch.commit();
           this.$router.push('/dashboard');
-          console.log('Bounty submitted:', this.form);
         } catch (error) {
           console.error('Error creating bounty:', error);
         }
