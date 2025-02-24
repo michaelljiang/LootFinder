@@ -23,14 +23,20 @@ export default {
 name: "ProfileCard",
 props: {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fc40972 (a)
     id: {
         type: String,
         required: true,
     },
     displayName: {
+<<<<<<< HEAD
 =======
     username: {
 >>>>>>> cfb29f9 (s)
+=======
+>>>>>>> fc40972 (a)
         type: String,
         required: true,
     },
