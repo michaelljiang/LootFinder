@@ -129,28 +129,37 @@
         for (const chatDoc of querySnapshot.docs) {
           const chatData = chatDoc.data();
 
-          // Get the other user's ID (buyer or seller)
           const otherUserId =
             chatData.sellerId === userId ? chatData.buyerId : chatData.sellerId;
 
-          // Fetch the other user's name from Firestore (from "user" collection)
+          // Fetch other user's name
           const userRef = doc(db, 'user', otherUserId);
           const userSnap = await getDoc(userRef);
           const otherUserName = userSnap.exists()
             ? userSnap.data().displayName || 'Unknown User'
             : 'Unknown User';
 
-          // Fetch the item details from Firestore (from "offer" collection)
-          const itemRef = doc(db, 'offer', chatData.itemId);
-          const itemSnap = await getDoc(itemRef);
-          const itemImage = itemSnap.exists() ? itemSnap.data().image : null;
+          let image = null;
+
+          // Determine if this is an item chat or bounty chat and fetch appropriate details
+          if (chatData.itemId) {
+            const itemRef = doc(db, 'offer', chatData.itemId);
+            const itemSnap = await getDoc(itemRef);
+            image = itemSnap.exists() ? itemSnap.data().image : null;
+          } else if (chatData.bountyId) {
+            const bountyRef = doc(db, 'bounty', chatData.bountyId);
+            const bountySnap = await getDoc(bountyRef);
+            // Assuming bounties have an image field - adjust if the field name is different
+            image = bountySnap.exists() ? bountySnap.data().image : null;
+          }
 
           chatList.push({
             id: chatDoc.id,
             otherUserName,
             lastMessage: chatData.lastMessage,
             lastMessageTimestamp: chatData.lastMessageTimestamp,
-            itemImage,
+            itemImage: image,
+            isBounty: !!chatData.bountyId,
           });
         }
         return chatList;
