@@ -16,7 +16,7 @@
             <button
               @click="isOpen = !isOpen"
               type="button"
-              class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600"
+              class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600 z-50"
               aria-label="toggle menu"
             >
               <svg
@@ -57,7 +57,7 @@
         <div
           :class="[
             isOpen
-              ? 'translate-x-0 opacity-100'
+              ? 'translate-x-0 opacity-100 bg-lightbackground'
               : 'opacity-0 -translate-x-full',
           ]"
           class="absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center"
@@ -89,7 +89,7 @@
             </router-link>
             <router-link
               to="/inbox"
-              class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Inbox
             </router-link>
@@ -108,27 +108,21 @@
 
             <!-- Display profile picture if user is logged in -->
             <template v-else>
-              <button
-                type="button"
-                class="flex items-center focus:outline-none"
-                aria-label="toggle profile dropdown"
+              <router-link 
+                to="/profile"
+                class="px-3 py-2 -mx-3 -my-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white flex items-center w-full lg:mx-1 lg:my-1"
               >
-                <div
-                  class="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full"
-                >
-                  <router-link to="/profile">
-                    <img
-                      :src="user?.photoURL || 'https://via.placeholder.com/150'"
-                      class="object-cover w-full h-full"
-                      alt="avatar"
-                    />
-                  </router-link>
+                <div class="w-8 h-8 rounded-full border-2 border-gray-400 overflow-hidden flex-shrink-0">
+                  <img
+                    :src="user?.photoURL || 'https://via.placeholder.com/150'"
+                    class="object-cover w-full h-full aspect-square"
+                    alt="avatar"
+                  />
                 </div>
-
                 <h3 class="mx-2 text-gray-700 lg:hidden">
                   {{ user?.displayName || 'Guest' }}
                 </h3>
-              </button>
+              </router-link>
             </template>
           </div>
         </div>
