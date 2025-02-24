@@ -37,16 +37,16 @@
             };
         },
         computed: {
-        filteredUsers() {
-            return this.results.filter(user => {
-                // Check if the user's displayName includes the search term (case insensitive)
-                const matchesSearch = this.query
-                    ? user.displayName.toLowerCase().includes(this.query.toLowerCase())
-                    : true;
-                return matchesSearch;
-                });
-            }
-        },
+            filteredUsers() {
+                return this.results.filter(user => {
+                    // Check if the user's displayName includes the search term (case insensitive)
+                    const matchesSearch = this.query
+                        ? user.displayName.toLowerCase().includes(this.query.toLowerCase())
+                        : true;
+                    return matchesSearch;
+                    });
+                }
+            },
         async created() {
             await this.searchUsers();
         },
