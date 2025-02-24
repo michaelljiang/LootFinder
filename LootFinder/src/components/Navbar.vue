@@ -82,6 +82,12 @@
               Dashboard
             </router-link>
             <router-link
+              to="/create"
+              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+            >
+              Create
+            </router-link>
+            <!-- <router-link
               to="/create-offer"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
@@ -92,7 +98,7 @@
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Create Bounty
-            </router-link>
+            </router-link> -->
             <router-link
               to="/update-offers"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
@@ -120,11 +126,13 @@
 
             <!-- Display profile picture if user is logged in -->
             <template v-else>
-              <router-link 
+              <router-link
                 to="/profile"
                 class="px-3 py-2 -mx-3 -my-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white flex items-center w-full lg:mx-1 lg:my-1"
               >
-                <div class="w-8 h-8 rounded-full border-2 border-gray-400 overflow-hidden flex-shrink-0">
+                <div
+                  class="w-8 h-8 rounded-full border-2 border-gray-400 overflow-hidden flex-shrink-0"
+                >
                   <img
                     :src="user?.photoURL || 'https://via.placeholder.com/150'"
                     class="object-cover w-full h-full aspect-square"

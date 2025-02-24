@@ -11,6 +11,7 @@ import ChatView from '@/views/ChatView.vue';
 import Inbox from '@/views/Inbox.vue';
 import BrowseBounties from '@/views/BrowseBounties.vue';
 import CreateBounty from '@/views/CreateBounty.vue';
+import CreateOptions from '@/views/CreateOptions.vue';
 
 const routes = [
   {
@@ -30,14 +31,20 @@ const routes = [
     meta: { requiresAuth: true }, // Route requires authentication
   },
   {
+    path: '/create',
+    name: 'CreateOptions',
+    component: CreateOptions,
+    meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
     path: '/create-offer',
     name: 'Create Offer',
     component: CreateOffer,
     meta: { requiresAuth: true }, // Route requires authentication
   },
   {
-    path: '/create-bounty',
-    name: 'Create Bounty',
+    path: '/post-bounty',
+    name: 'Post Bounty',
     component: CreateBounty,
     meta: { requiresAuth: true }, // Route requires authentication
   },
