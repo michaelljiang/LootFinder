@@ -1,25 +1,33 @@
 <template>
-    <div class="flex flex-col w-72 h-96 rounded-2xl overflow-hidden min-h-screen text-center bg-gray-100">
+    <div class="w-70 bg-white shadow-lg rounded-xl overflow-hidden p-6 flex flex-col items-center space-y-4">
+        <!-- Profile Image -->
         <img 
             :src="image" 
             alt="Profile Picture" 
-            class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500 shadow-md"
-            />
-        <div class="mt-4 space-y-2">
-            <p class="text-lg font-medium text-gray-700"> {{ username }}</p>
-            <p class="text-gray-600"><strong>Email:</strong> {{ email }}</p>
+            class="w-28 h-28 rounded-full border-4 border-blue-500 shadow-md"
+        />
+
+        <!-- User Info -->
+        <div class="text-center">
+            <p class="text-xl font-semibold text-gray-800">{{ displayName }}</p>
+            <p class="text-sm text-gray-600"><strong>Email:</strong> {{ email }}</p>
         </div>
-        <button
-            @click="openChat"
-            class="px-2 py-1 text-xs font-semibold text-white uppercase bg-blue-500 rounded hover:bg-blue-600 transition"
-        >
-            Message Seller
-        </button>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-3">
+            <button
+                @click="openChat"
+                class="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 transition"
+            >
+                Message Seller
+            </button>
+        </div>
     </div>
 </template>
 
-<script>
+<script>    
 export default {
+<<<<<<< HEAD
 name: "ProfileCard",
 props: {
 <<<<<<< HEAD
@@ -63,4 +71,35 @@ methods: {
     },
     },
 };
+=======
+    name: "ProfileCard",
+    props: {
+        id: {
+            type: String,
+            required: true,
+        },
+        displayName: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        image: {
+            type: String,
+            required: true,
+        },
+    },
+    methods: {
+        openChat() {
+            this.$router.push(`/chat/${this.sellerId}`);
+        },
+        },
+    };
+>>>>>>> 7c5b880 (a)
 </script>
