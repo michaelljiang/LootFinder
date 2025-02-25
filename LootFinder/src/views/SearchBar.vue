@@ -5,10 +5,10 @@
                 v-model="query" 
                 type="text" 
                 placeholder="Search for users" 
-                class="w-full sm:w-64 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300" 
+                class="w-full sm:w-96 md:w-[500px] lg:w-[600px] p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
             />
         </div>
-        <div class="flex flex-wrap justify-center items-stretch gap-6">
+        <div class="flex flex-wrap justify-center items-stretch gap-8">
             <ProfileCard 
                 v-for="user in filteredUsers"
                 :key="user.id"
