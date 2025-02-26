@@ -44,6 +44,7 @@
         :description="item.description"
         :price="item.price"
         :image="item.image"
+        :sellerId="item.sellerId"
         @contextmenu.prevent="openEditMenu($event, item)" 
       />
     </div>
