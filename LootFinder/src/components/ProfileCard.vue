@@ -27,51 +27,6 @@
 
 <script>    
 export default {
-<<<<<<< HEAD
-name: "ProfileCard",
-props: {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> fc40972 (a)
-    id: {
-        type: String,
-        required: true,
-    },
-    displayName: {
-<<<<<<< HEAD
-=======
-    username: {
->>>>>>> cfb29f9 (s)
-=======
->>>>>>> fc40972 (a)
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    title: {
-        type: String,
-        required: true,
-    },
-    image: {
-        type: String,
-        required: true,
-    },
-    sellerId: {
-        type: String,
-        required: true,
-    },
-},
-methods: {
-    openChat() {
-        this.$router.push(`/chat/${this.sellerId}`);
-    },
-    },
-};
-=======
     name: "ProfileCard",
     props: {
         id: {
@@ -101,5 +56,4 @@ methods: {
         },
         },
     };
->>>>>>> 7c5b880 (a)
 </script>
