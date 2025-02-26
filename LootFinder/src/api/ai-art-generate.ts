@@ -2,6 +2,8 @@
 
 import axios from 'axios';
 
+//get the starry AI API key from ../../config.ts
+
 const BASE_URL = 'https://api.starryai.com/creations/';
 
 interface PostResponse {
@@ -21,19 +23,21 @@ interface GetImageResponse {
  * @param description - The required description for the art.
  * @returns A promise resolving to the post ID.
  */
-export async function createArtPost(description: string): Promise<PostResponse> {
+export async function createArtPost(
+  description: string
+): Promise<PostResponse> {
   try {
     const data = {
-      description,              // Required field from user input
-      style: 'abstract',        // Default style
-      resolution: '1024x1024',  // Default resolution
-      colorScheme: 'vibrant',   // Default color scheme
+      description, // Required field from user input
+      style: 'abstract', // Default style
+      resolution: '1024x1024', // Default resolution
+      colorScheme: 'vibrant', // Default color scheme
     };
 
     const response = await axios.post(`${BASE_URL}`, data, {
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': "" // Replace with env variable in production
+        'X-API-Key': import.meta.env.VITE_AI_API,
       },
     });
 
@@ -54,7 +58,7 @@ export async function getCompletedImage(id: string): Promise<string> {
     const response = await axios.get<GetImageResponse>(`${BASE_URL}/${id}`, {
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': ""
+        'X-API-Key': import.meta.env.VITE_AI_API,
       },
     });
 
