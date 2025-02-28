@@ -7,3 +7,5 @@ We were able to circumvent this issue by creating a fork of this repo at https:/
 In order to deploy our app, [AjayLiu](https://github.com/ajayliu) simply clicks the Sync Fork button. This will update our fork's main to this repo's main and deploy automatically to https://lootfinder.vercel.app/
 
 <img width="677" alt="image" src="https://github.com/user-attachments/assets/dc91bee0-ce00-4aa2-8553-9eaaaac11108" />
+
+Additionally, we use a .env file for secrets, which must be added to Vercel on the deploy environment variables.
