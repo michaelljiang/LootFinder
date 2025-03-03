@@ -2,7 +2,7 @@
   <div class="relative flex items-center justify-center">
     <!-- Wanted Poster Background -->
     <div
-      class="absolute w-80 h-104 bg-[#F5DEB3] rounded-lg shadow-2xl border-4 border-brown-700
+      class="absolute w-80 h-104 bg-[#F5DEB3] rounded-lg shadow-2xl border-2 border-brown-700
              flex flex-col items-center text-center z-0
              before:absolute before:w-full before:bg-gradient-to-b before:from-[#E8C08F] before:to-transparent
              after:absolute after:w-full after:bg-gradient-to-t after:from-[#E8C08F] after:to-transparent"
