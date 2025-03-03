@@ -28,7 +28,7 @@
       />
       <button
         @click="resetFilters"
-        class="w-full sm:w-auto p-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition"
+        class="w-full sm:w-auto p-2 bg-[#ea7643] text-white rounded shadow hover:bg-[#eb8e65] transition"
       >
         Reset Filters
       </button>

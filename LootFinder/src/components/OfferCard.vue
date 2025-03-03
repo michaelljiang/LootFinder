@@ -30,8 +30,8 @@
         />
       </div>
 
-      <div class="flex items-center justify-between bg-[#DECBB6] px-4 py-2 mt-2">
-        <h1 class="text-lg font-bold text-black truncate flex-grow">${{ price }}</h1>
+      <div class="flex items-center justify-between bg-[#895129] px-4 py-2 mt-2">
+        <h1 class="text-lg font-bold text-gray-200 truncate flex-grow">${{ price }}</h1>
         <!-- <button
           class="px-2 py-1 text-xs font-semibold text-gray-900 uppercase transition-colors duration-300 transform bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none"
         >
@@ -47,7 +47,7 @@
 
         <button
           @click="openChat"
-          class="px-2 py-2 text-xs font-semibold text-black uppercase bg-blue-500 rounded hover:bg-blue-600 transition"
+          class="px-2 py-2 text-xs font-semibold text-black uppercase bg-[#ea7643] rounded hover:bg-[#eb8e65] transition"
         >
           Message
         </button>
