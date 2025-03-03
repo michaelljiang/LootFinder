@@ -9,6 +9,9 @@ import BrowseOffers from '@/views/BrowseOffers.vue';
 import UpdateOffers from '@/views/UpdateOffers.vue';
 import ChatView from '@/views/ChatView.vue';
 import Inbox from '@/views/Inbox.vue';
+import BrowseBounties from '@/views/BrowseBounties.vue';
+import CreateBounty from '@/views/CreateBounty.vue';
+import CreateOptions from '@/views/CreateOptions.vue';
 
 const routes = [
   {
@@ -28,9 +31,21 @@ const routes = [
     meta: { requiresAuth: true }, // Route requires authentication
   },
   {
+    path: '/create',
+    name: 'CreateOptions',
+    component: CreateOptions,
+    meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
     path: '/create-offer',
     name: 'Create Offer',
     component: CreateOffer,
+    meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
+    path: '/post-bounty',
+    name: 'Post Bounty',
+    component: CreateBounty,
     meta: { requiresAuth: true }, // Route requires authentication
   },
   {
@@ -43,6 +58,12 @@ const routes = [
     path: '/browse-offers',
     name: 'Browse Offers',
     component: BrowseOffers,
+    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
+  },
+  {
+    path: '/browse-bounties',
+    name: 'Browse Bounties',
+    component: BrowseBounties,
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
   {
