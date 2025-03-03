@@ -35,7 +35,7 @@
     </div>
 
     <!-- Offers List -->
-    <div class="flex flex-wrap justify-center items-stretch gap-6">
+    <div class="flex flex-wrap justify-center items-stretch gap-10">
       <OfferCard
         v-for="item in filteredOffers"
         :key="item.id"
