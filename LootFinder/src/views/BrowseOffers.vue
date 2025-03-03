@@ -28,7 +28,7 @@
       />
       <button
         @click="resetFilters"
-        class="w-full sm:w-auto p-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition"
+        class="w-full sm:w-auto p-2 bg-[#ea7643] text-white rounded shadow hover:bg-[#eb8e65] transition"
       >
         Reset Filters
       </button>
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Offers List -->
-    <div class="flex flex-wrap justify-center items-stretch gap-6">
+    <div class="flex flex-wrap justify-center items-stretch gap-10">
       <OfferCard
         v-for="item in filteredOffers"
         :key="item.id"
