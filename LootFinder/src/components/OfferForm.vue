@@ -1,14 +1,33 @@
 <template>
   <div
+   
     class="form-container mx-auto p-6 rounded-2xl shadow-lg border-border border-2"
+  
   >
     <form @submit.prevent="handleSubmit" class="space-y-4">
       <!-- ************************** Image ********************************* -->
       <div class="flex flex-col items-center">
         <div
           @dragenter.prevent="toggleActive"
+        <div
+          @dragenter.prevent="toggleActive"
           @dragleave.prevent="toggleActive"
           @dragover.prevent
+          @drop.prevent="
+            (event) => {
+              toggleActive();
+              handleDrop(event);
+            }
+          "
+          :class="[
+            'flex flex-col justify-center items-center border-2 border-dashed w-11/12 rounded-2xl ease-in',
+            {
+              'bg-textPrimary': active,
+              'bg-lightbackground': !active,
+              'border-border': !active,
+              'border-lightbackground': active,
+            },
+          ]"
           @drop.prevent="
             (event) => {
               toggleActive();
@@ -52,7 +71,35 @@
                 'bg-lightbackground': active,
               },
             ]"
+          <span
+            :class="[
+              'py-1 font-semibold mt-3',
+              { 'text-border': !active, 'text-lightbackground': active },
+            ]"
           >
+            Drag and Drop Image
+          </span>
+          <span
+            :class="[
+              'text-m font-semibold my-1',
+              { 'text-border': !active, 'text-lightbackground': active },
+            ]"
+          >
+            Or
+          </span>
+          <label
+            for="image"
+            :class="[
+              'mt-1 font-semibold mb-3 rounded-xl py-1 px-4',
+              {
+                'text-textPrimary': active,
+                'text-lightbackground': !active,
+                'bg-border': !active,
+                'bg-lightbackground': active,
+              },
+            ]"
+          >
+            Select Image
             Select Image
           </label>
           <input type="file" id="image" class="hidden" @change="handleFileUpload"/>
@@ -62,6 +109,10 @@
       </div>
       <!-- ************************** Title ********************************* -->
       <div class="flex flex-col items-center">
+        <label
+          for="title"
+          class="text-center block text-l font-medium text-textPrimary"
+        >
         <label
           for="title"
           class="text-center block text-l font-medium text-textPrimary"
@@ -89,6 +140,7 @@
           id="description"
           v-model="form.description"
           class="text-center text-textBody mt-1 block w-11/12 h-24 py-2 border-border border-2 rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          class="text-center text-textBody mt-1 block w-11/12 h-24 py-2 border-border border-2 rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         ></textarea>
       </div>
       <!-- ************************** Location ********************************* -->
@@ -97,7 +149,14 @@
           class="text-center block text-m mb-1 font-medium text-textPrimary"
         >
           Choose a Location
+        <label
+          class="text-center block text-m mb-1 font-medium text-textPrimary"
+        >
+          Choose a Location
         </label>
+        <span v-if="locationError" class="text-red-500 text-sm mb-1">
+          {{ locationError }}
+        </span>
         <span v-if="locationError" class="text-red-500 text-sm mb-1">
           {{ locationError }}
         </span>
@@ -109,6 +168,10 @@
           for="price"
           class="text-center block text-xl font-medium text-textPrimary pr-1"
         >
+        <label
+          for="price"
+          class="text-center block text-xl font-medium text-textPrimary pr-1"
+        >
           $
         </label>
         <input
@@ -116,8 +179,13 @@
           id="price"
           v-model="form.price"
           class="text-border t-1 block w-16 border-border border-2 pl-2 mr-2 rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          class="text-border t-1 block w-16 border-border border-2 pl-2 mr-2 rounded-xl shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
         <!-- ************************** Price Negotiable ********************************* -->
+        <label
+          for="negotiable"
+          class="text-center mr-2 text-m font-medium text-border"
+        >
         <label
           for="negotiable"
           class="text-center mr-2 text-m font-medium text-border"
@@ -164,6 +232,15 @@
     doc,
     GeoPoint,
   } from 'firebase/firestore';
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp,
+    writeBatch,
+    doc,
+    GeoPoint,
+  } from 'firebase/firestore';
   import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
   import { db, storage } from '@/firebase';
   import { getAuth } from 'firebase/auth';
@@ -172,6 +249,7 @@
   import { ref as vueRef } from 'vue';
   export default {
     name: 'OfferForm',
+    components: {
     components: {
       InputMap,
     },
@@ -214,6 +292,7 @@
     },
     methods: {
       // listen for update:location event, extract lat , lng from emitted values.
+      updateLocation(latlng) {
       updateLocation(latlng) {
         this.form.latitude = latlng.lat;
         this.form.longitude = latlng.lng;
@@ -262,6 +341,10 @@
             this.form.latitude,
             this.form.longitude,
           ]);
+          const geoHash = geohashForLocation([
+            this.form.latitude,
+            this.form.longitude,
+          ]);
           // current user instance
           const auth = getAuth();
           const currentUser = auth.currentUser;
@@ -274,6 +357,7 @@
 
           // reference to the offer collection
           const offerRef = doc(collection(db, 'offer'));
+          batch.set(offerRef, {
           batch.set(offerRef, {
             title: this.form.title,
             description: this.form.description,
@@ -299,7 +383,10 @@
 
           // redirect to BrowseOffers after successful submission
           this.$router.push('/browse-offers');
+          // redirect to BrowseOffers after successful submission
+          this.$router.push('/browse-offers');
           console.log('Form submitted:', this.form);
+        } catch (error) {
         } catch (error) {
           console.error('Error creating offer ', error);
         }
@@ -314,6 +401,7 @@
       },
       cancel() {
         this.$router.push('/browse-offers');
+        this.$router.push('/browse-offers');
       },
     },
   };
@@ -323,4 +411,8 @@
   .form-container {
     max-width: 600px; /* Adjust the max-width as needed */
   }
+  .form-container {
+    max-width: 600px; /* Adjust the max-width as needed */
+  }
 </style>
+
