@@ -8,7 +8,6 @@
     <div v-else-if="chats.length === 0" class="text-gray-500 text-center">
       No conversations yet.
     </div>
-
     <div v-else class="space-y-4">
       <div
         v-for="chat in chats"
@@ -22,14 +21,12 @@
           alt="Item"
           class="w-12 h-12 rounded-lg object-cover mr-3"
         />
-
         <div class="flex-1">
           <h2 class="font-bold text-gray-800">{{ chat.otherUserName }}</h2>
           <p class="text-gray-600 text-sm truncate">
             {{ chat.lastMessage || 'No messages yet' }}
           </p>
         </div>
-
         <!-- Timestamp -->
         <span class="text-xs text-gray-500">
           {{ formatTimestamp(chat.lastMessageTimestamp) }}
@@ -48,13 +45,13 @@
     doc,
     getDoc,
     orderBy,
+    updateDoc,
   } from 'firebase/firestore';
   import { db } from '@/firebase';
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
   import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import LoadingScreen from '@/components/LoadingScreen.vue';
-
   export default {
     name: 'Inbox',
     components: {
@@ -66,7 +63,6 @@
       const currentUser = ref(null);
       const chats = ref([]);
       const loading = ref(true);
-
       onMounted(() => {
         onAuthStateChanged(auth, (user) => {
           if (user) {
@@ -77,53 +73,45 @@
             chats.value = [];
           }
         });
+        });
       });
 
       const fetchChats = async () => {
         if (!currentUser.value) return;
-
         try {
           const userId = currentUser.value.uid;
           let chatList = [];
 
-          // Fetch chats where user is the buyer
           const buyerChatsQuery = query(
             collection(db, 'chats'),
             where('buyerId', '==', userId),
             orderBy('lastMessageTimestamp', 'desc')
           );
           const buyerChatsSnapshot = await getDocs(buyerChatsQuery);
-          chatList = await processChatDocs(
-            buyerChatsSnapshot,
-            userId,
-            chatList
-          );
+          chatList = await processChatDocs(buyerChatsSnapshot, userId, chatList);
 
-          // Fetch chats where user is the seller
           const sellerChatsQuery = query(
             collection(db, 'chats'),
             where('sellerId', '==', userId),
             orderBy('lastMessageTimestamp', 'desc')
           );
           const sellerChatsSnapshot = await getDocs(sellerChatsQuery);
-          chatList = await processChatDocs(
-            sellerChatsSnapshot,
-            userId,
-            chatList
-          );
+          chatList = await processChatDocs(sellerChatsSnapshot, userId, chatList);
 
-          // Sort combined chats manually in case some don't have timestamps
-          chats.value = chatList.sort((a, b) => {
-            if (!a.lastMessageTimestamp) return 1; // Move empty chats to the bottom
+          chatList.sort((a, b) => {
+            if (!a.lastMessageTimestamp) return 1;
             if (!b.lastMessageTimestamp) return -1;
             return (
               b.lastMessageTimestamp.toMillis() -
               a.lastMessageTimestamp.toMillis()
             );
           });
+
           chats.value = chatList.filter(
             (chat) => chat.otherUserId !== userId && chat.lastMessage !== ''
           );
+
+          clearUnreadCounts();
         } catch (error) {
           console.error('Error fetching conversations:', error);
         } finally {
@@ -134,20 +122,15 @@
       const processChatDocs = async (querySnapshot, userId, chatList) => {
         for (const chatDoc of querySnapshot.docs) {
           const chatData = chatDoc.data();
-
           const otherUserId =
             chatData.sellerId === userId ? chatData.buyerId : chatData.sellerId;
 
-          // Fetch other user's name
           const userRef = doc(db, 'user', otherUserId);
           const userSnap = await getDoc(userRef);
           const otherUserName = userSnap.exists()
             ? userSnap.data().displayName || 'Unknown User'
             : 'Unknown User';
-
           let image = null;
-
-          // Determine if this is an item chat or bounty chat and fetch appropriate details
           if (chatData.itemId) {
             const itemRef = doc(db, 'offer', chatData.itemId);
             const itemSnap = await getDoc(itemRef);
@@ -155,10 +138,8 @@
           } else if (chatData.bountyId) {
             const bountyRef = doc(db, 'bounty', chatData.bountyId);
             const bountySnap = await getDoc(bountyRef);
-            // Assuming bounties have an image field - adjust if the field name is different
             image = bountySnap.exists() ? bountySnap.data().image : null;
           }
-
           chatList.push({
             id: chatDoc.id,
             otherUserName,
@@ -166,9 +147,25 @@
             lastMessageTimestamp: chatData.lastMessageTimestamp,
             itemImage: image,
             isBounty: !!chatData.bountyId,
+            buyerId: chatData.buyerId,
+            sellerId: chatData.sellerId,
+            otherUserId, // for filtering purposes
           });
         }
         return chatList;
+      };
+
+      const clearUnreadCounts = async () => {
+        if (!currentUser.value) return;
+        const userId = currentUser.value.uid;
+        for (const chat of chats.value) {
+          const chatRef = doc(db, 'chats', chat.id);
+          if (userId === chat.buyerId) {
+            await updateDoc(chatRef, { buyerUnreadCount: 0 });
+          } else if (userId === chat.sellerId) {
+            await updateDoc(chatRef, { sellerUnreadCount: 0 });
+          }
+        }
       };
 
       const goToChat = (chatId) => {
