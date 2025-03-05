@@ -177,13 +177,13 @@
           });
 
           await batch.commit();
-          this.$router.push('/dashboard');
+          this.$router.push('/browse');
         } catch (error) {
           console.error('Error creating bounty:', error);
         }
       },
       cancel() {
-        this.$router.push('/dashboard');
+        this.$router.push('/browse');
       },
     },
   };
