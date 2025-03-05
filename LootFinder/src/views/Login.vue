@@ -100,7 +100,7 @@
   }
 
   .login-card {
-    background-color: var(--color-background);
+    /* background-color: var(--color-lightbackground); */
     border-radius: 10px;
     border: 2px solid var(--color-border);
     padding: 40px;
