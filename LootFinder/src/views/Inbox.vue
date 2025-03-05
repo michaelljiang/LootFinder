@@ -2,7 +2,9 @@
   <div class="p-4 min-h-screen bg-gray-100">
     <h1 class="text-2xl font-bold text-gray-800 mb-4">Inbox</h1>
 
-    <div v-if="loading" class="text-gray-500">Loading conversations...</div>
+    <div v-if="loading" class="flex justify-center">
+      <LoadingScreen />
+    </div>
     <div v-else-if="chats.length === 0" class="text-gray-500">
       No conversations yet.
     </div>
@@ -51,9 +53,13 @@
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
   import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
+  import LoadingScreen from '@/components/LoadingScreen.vue';
 
   export default {
     name: 'Inbox',
+    components: {
+      LoadingScreen,
+    },
     setup() {
       const router = useRouter();
       const auth = getAuth();
