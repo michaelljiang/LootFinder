@@ -426,7 +426,7 @@
 
       async markBought(bounty) {
         const bountyRef = doc(db, 'bounty', bounty.id);
-        const newBoughtStatus = bounty.active;
+        const newBoughtStatus = !bounty.active;
 
         try {
           await updateDoc(bountyRef, { active: newBoughtStatus });
@@ -437,8 +437,8 @@
 
           this.showSuccessMessage(
             newBoughtStatus
-              ? 'Bounty marked as fulfilled!'
-              : 'Bounty marked as unfulfilled!'
+              ? 'Bounty marked as unfulfilled!'
+              : 'Bounty marked as fulfilled!'
           );
         } catch (error) {
           console.error('Error updating bounty status:', error.message);
