@@ -1,11 +1,11 @@
 <template>
   <div class="p-4 min-h-screen bg-gray-100">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Inbox</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Inbox</h1>
 
     <div v-if="loading" class="flex justify-center">
       <LoadingScreen />
     </div>
-    <div v-else-if="chats.length === 0" class="text-gray-500">
+    <div v-else-if="chats.length === 0" class="text-gray-500 text-center">
       No conversations yet.
     </div>
 
