@@ -99,12 +99,12 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: var(--color-lightbackground);
+    /* background-color: var(--color-lightbackground); */
     padding: 20px;
   }
 
   .profile-card {
-    background-color: var(--color-background);
+    /* background-color: var(--color-background); */
     border-radius: 10px;
     border: 2px solid var(--color-border);
     padding: 30px;
