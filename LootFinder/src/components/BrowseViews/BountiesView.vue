@@ -1,7 +1,31 @@
 <template>
   <div>
+    <!-- Map and Selected Bounty Display -->
+    <div
+      class="mb-6 flex flex-col sm:flex-row gap-6 justify-center items-start"
+    >
+      <!-- Map -->
+      <BrowseMap
+        class="sm:w-1/2"
+        :filteredOffers="filteredItems"
+        @marker-clicked="setSelectedBounty"
+      />
+
+      <!-- Selected Bounty Card -->
+      <BountyCard
+        v-if="selectedBounty"
+        class="sm:w-1/3"
+        :id="selectedBounty.id"
+        :title="selectedBounty.title"
+        :description="selectedBounty.description"
+        :price="selectedBounty.price"
+        :image="selectedBounty.image"
+        :buyerId="selectedBounty.buyerId"
+      />
+    </div>
+
     <!-- Bounties List -->
-    <div class="flex flex-wrap justify-center items-stretch gap-6">
+    <div class="flex flex-wrap justify-center items-stretch gap-10">
       <BountyCard
         v-for="item in filteredItems"
         :key="item.id"
@@ -21,11 +45,13 @@
   import { updateDoc, deleteDoc, doc } from 'firebase/firestore';
   import { db } from '@/firebase';
   import BountyCard from '@/components/BountyCard.vue';
+  import BrowseMap from '@/components/BrowseMap.vue';
 
   export default {
     name: 'BountiesView',
     components: {
       BountyCard,
+      BrowseMap,
     },
     props: {
       filteredItems: {
@@ -40,9 +66,13 @@
     data() {
       return {
         editItem: null,
+        selectedBounty: null,
       };
     },
     methods: {
+      setSelectedBounty(bounty) {
+        this.selectedBounty = bounty;
+      },
       openEditMenu(event, item) {
         if (this.isAdmin) {
           this.editItem = { ...item };
