@@ -127,21 +127,21 @@
           v-for="bounty in bounties"
           :key="bounty.id"
           class="border border-[var(--color-border)] rounded-lg p-5 shadow-md relative"
-          :class="{ 'opacity-80': bounty.active }"
+          :class="{ 'opacity-80': !bounty.active }"
           :style="{
-            backgroundColor: bounty.active ? 'var(--color-background)' : '#fff',
+            backgroundColor: bounty.active ? '#fff' : 'var(--color-background)',
           }"
         >
           <div class="flex flex-col md:flex-row justify-between">
             <div class="flex-grow">
               <h2 class="text-xl font-bold text-[var(--color-textPrimary)]">
-                {{ (bounty.active ? '[FULFILLED] ' : '') + bounty.title }}
+                {{ (bounty.active ? '' : '[FULFILLED] ') + bounty.title }}
               </h2>
               <p class="text-[var(--color-textBody)] my-2">
                 {{ bounty.description }}
               </p>
               <p class="text-lg font-bold text-[var(--color-textSecondary)]">
-                ${{ bounty.reward }}
+                ${{ bounty.price }}
               </p>
               <img
                 v-if="bounty.image"
@@ -162,12 +162,12 @@
                 class="px-4 py-2 text-white rounded-lg transition-colors"
                 :class="
                   bounty.active
-                    ? 'bg-gray-600 hover:bg-gray-700'
-                    : 'bg-green-500 hover:bg-green-600'
+                    ? 'bg-green-500 hover:bg-green-600'
+                    : 'bg-gray-600 hover:bg-gray-700'
                 "
               >
                 {{
-                  bounty.active ? 'Mark as unfulfilled' : 'Mark as fulfilled'
+                  bounty.active ? 'Mark as fulfilled' : 'Mark as unfulfilled'
                 }}
               </button>
             </div>
@@ -426,7 +426,7 @@
 
       async markBought(bounty) {
         const bountyRef = doc(db, 'bounty', bounty.id);
-        const newBoughtStatus = !bounty.active;
+        const newBoughtStatus = bounty.active;
 
         try {
           await updateDoc(bountyRef, { active: newBoughtStatus });
