@@ -75,7 +75,7 @@ export default {
       try {
         const userId = currentUser.value.uid;
         let chatList = [];
-        // Fetch chats where user is buyer
+
         const buyerChatsQuery = query(
           collection(db, 'chats'),
           where('buyerId', '==', userId),
@@ -83,7 +83,7 @@ export default {
         );
         const buyerChatsSnapshot = await getDocs(buyerChatsQuery);
         chatList = await processChatDocs(buyerChatsSnapshot, userId, chatList);
-        // Fetch chats where user is seller
+
         const sellerChatsQuery = query(
           collection(db, 'chats'),
           where('sellerId', '==', userId),
@@ -91,7 +91,7 @@ export default {
         );
         const sellerChatsSnapshot = await getDocs(sellerChatsQuery);
         chatList = await processChatDocs(sellerChatsSnapshot, userId, chatList);
-        // Sort chats by timestamp (newest first)
+
         chatList.sort((a, b) => {
           if (!a.lastMessageTimestamp) return 1;
           if (!b.lastMessageTimestamp) return -1;
@@ -100,11 +100,11 @@ export default {
             a.lastMessageTimestamp.toMillis()
           );
         });
-        // Filter chats (for example, excluding self-conversations)
+
         chats.value = chatList.filter(
           (chat) => chat.otherUserId !== userId && chat.lastMessage !== ''
         );
-        // Mark all chats as read when Inbox is viewed
+
         clearUnreadCounts();
       } catch (error) {
         console.error('Error fetching conversations:', error);
@@ -112,13 +112,13 @@ export default {
         loading.value = false;
       }
     };
-
+    
     const processChatDocs = async (querySnapshot, userId, chatList) => {
       for (const chatDoc of querySnapshot.docs) {
         const chatData = chatDoc.data();
         const otherUserId =
           chatData.sellerId === userId ? chatData.buyerId : chatData.sellerId;
-        // Fetch other user's name
+          
         const userRef = doc(db, 'user', otherUserId);
         const userSnap = await getDoc(userRef);
         const otherUserName = userSnap.exists()
@@ -148,8 +148,7 @@ export default {
       }
       return chatList;
     };
-
-    // Reset unread counts for every chat for the current user
+    
     const clearUnreadCounts = async () => {
       if (!currentUser.value) return;
       const userId = currentUser.value.uid;
@@ -162,7 +161,7 @@ export default {
         }
       }
     };
-
+    
     const goToChat = (chatId) => {
       router.push(`/chat/${chatId}`);
     };

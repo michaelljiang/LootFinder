@@ -101,8 +101,7 @@ export default {
         }
       });
     });
-
-    // 1. Fetch chat details (and store buyerId/sellerId)
+    
     const fetchChatDetails = async () => {
       if (!chatId) {
         console.error('Chat ID missing');
@@ -119,7 +118,6 @@ export default {
       }
     };
 
-    // 2. Fetch seller details
     const fetchSellerDetails = async (sellerId) => {
       if (!sellerId) {
         console.error('Seller ID missing');
@@ -134,7 +132,6 @@ export default {
       }
     };
 
-    // 3. Fetch messages in real-time and mark as read when viewing
     const fetchMessages = () => {
       if (!chatId) {
         console.error('Chat ID missing');
@@ -148,12 +145,10 @@ export default {
           ...doc.data(),
         }));
         loading.value = false;
-        // Mark messages as seen (reset unread count) because user is viewing the conversation
         markChatAsRead();
       });
     };
 
-    // 4. Send a message and increment recipient’s unread count
     const sendMessage = async () => {
       if (!newMessage.value.trim()) return;
       const messagesRef = collection(db, 'chats', chatId, 'messages');
@@ -163,19 +158,15 @@ export default {
         createdAt: serverTimestamp(),
       });
 
-      // Prepare update for last message info…
       const updateData = {
         lastMessage: newMessage.value,
         lastMessageTimestamp: serverTimestamp(),
       };
-
-      // And increment unread count for the other party:
+      
       if (chatData.value) {
         if (currentUser.value.uid === chatData.value.buyerId) {
-          // If current user is buyer, increment seller’s unread count:
           updateData.sellerUnreadCount = increment(1);
         } else {
-          // Otherwise, increment buyer’s unread count:
           updateData.buyerUnreadCount = increment(1);
         }
       }
@@ -183,7 +174,6 @@ export default {
       newMessage.value = '';
     };
 
-    // 5. Mark chat as read by resetting current user’s unread count to 0
     const markChatAsRead = async () => {
       if (!chatData.value || !chatDocRef.value || !currentUser.value) return;
       const field =
@@ -193,7 +183,6 @@ export default {
       await updateDoc(chatDocRef.value, { [field]: 0 });
     };
 
-    // Utility: format timestamps
     const formatDate = (timestamp) => {
       if (!timestamp) return '';
       const dateObj = timestamp.toDate();

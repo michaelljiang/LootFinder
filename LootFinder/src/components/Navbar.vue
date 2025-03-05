@@ -70,7 +70,6 @@
             >
               My Offers
             </router-link>
-            <!-- Notice the @click handler on the Inbox link -->
             <router-link
               to="/inbox"
               @click.native="clearUnreadCounts"
@@ -151,7 +150,7 @@ export default {
             displayName: currentUser.displayName,
             photoURL: currentUser.photoURL,
           };
-          // Listen to chats where user is the buyer:
+
           const buyerChatsQuery = query(
             collection(db, 'chats'),
             where('buyerId', '==', currentUser.uid)
@@ -164,7 +163,7 @@ export default {
             });
             buyerUnread.value = sum;
           });
-          // Listen to chats where user is the seller:
+
           const sellerChatsQuery = query(
             collection(db, 'chats'),
             where('sellerId', '==', currentUser.uid)
@@ -196,12 +195,10 @@ export default {
         console.error('Login failed:', error.message);
       }
     };
-
-    // New function: clear unread counts immediately on click
+    
     const clearUnreadCounts = async () => {
       if (!user.value) return;
       const userId = user.value.uid;
-      // Clear buyer unread counts
       const buyerChatsQuery = query(
         collection(db, 'chats'),
         where('buyerId', '==', userId)
@@ -211,7 +208,6 @@ export default {
         const chatRef = doc(db, 'chats', docSnap.id);
         updateDoc(chatRef, { buyerUnreadCount: 0 });
       });
-      // Clear seller unread counts
       const sellerChatsQuery = query(
         collection(db, 'chats'),
         where('sellerId', '==', userId)
