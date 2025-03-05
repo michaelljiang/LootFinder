@@ -67,6 +67,7 @@ import {
   serverTimestamp,
   orderBy,
   query,
+  increment,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -83,6 +84,8 @@ export default {
     const currentUser = ref(null);
     const seller = ref(null);
     const loading = ref(true);
+    const chatData = ref(null);
+    const chatDocRef = ref(null);
 
     const auth = getAuth();
 
@@ -98,35 +101,30 @@ export default {
         }
       });
     });
-
-    // 1. Fetch chat details (to get sellerId)
+    
     const fetchChatDetails = async () => {
       if (!chatId) {
         console.error('Chat ID missing');
         return;
       }
-
-      const chatRef = doc(db, 'chats', chatId);
-      const chatSnap = await getDoc(chatRef);
-
+      chatDocRef.value = doc(db, 'chats', chatId);
+      const chatSnap = await getDoc(chatDocRef.value);
       if (chatSnap.exists()) {
-        const chatData = chatSnap.data();
-        fetchSellerDetails(chatData.sellerId);
+        const data = chatSnap.data();
+        chatData.value = data;
+        fetchSellerDetails(data.sellerId);
       } else {
         console.error('Chat not found!');
       }
     };
 
-    // 2. Fetch seller details using sellerId
     const fetchSellerDetails = async (sellerId) => {
       if (!sellerId) {
         console.error('Seller ID missing');
         return;
       }
-
       const sellerRef = doc(db, 'user', sellerId);
       const sellerSnap = await getDoc(sellerRef);
-
       if (sellerSnap.exists()) {
         seller.value = sellerSnap.data();
       } else {
@@ -134,48 +132,57 @@ export default {
       }
     };
 
-    // 3. Fetch chat messages in real-time
     const fetchMessages = () => {
       if (!chatId) {
         console.error('Chat ID missing');
         return;
       }
-
       const messagesRef = collection(db, 'chats', chatId, 'messages');
       const q = query(messagesRef, orderBy('createdAt', 'asc'));
-
       onSnapshot(q, (snapshot) => {
         messages.value = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         loading.value = false;
+        markChatAsRead();
       });
     };
 
-    // 4. Send a message
     const sendMessage = async () => {
       if (!newMessage.value.trim()) return;
-
       const messagesRef = collection(db, 'chats', chatId, 'messages');
-      const chatRef = doc(db, 'chats', chatId);
-
       await addDoc(messagesRef, {
         senderId: currentUser.value.uid,
         text: newMessage.value,
         createdAt: serverTimestamp(),
       });
 
-      // Update lastMessage & lastMessageTimestamp in chat document
-      await updateDoc(chatRef, {
+      const updateData = {
         lastMessage: newMessage.value,
         lastMessageTimestamp: serverTimestamp(),
-      });
-
+      };
+      
+      if (chatData.value) {
+        if (currentUser.value.uid === chatData.value.buyerId) {
+          updateData.sellerUnreadCount = increment(1);
+        } else {
+          updateData.buyerUnreadCount = increment(1);
+        }
+      }
+      await updateDoc(chatDocRef.value, updateData);
       newMessage.value = '';
     };
 
-    // Utility to format Timestamps
+    const markChatAsRead = async () => {
+      if (!chatData.value || !chatDocRef.value || !currentUser.value) return;
+      const field =
+        currentUser.value.uid === chatData.value.buyerId
+          ? 'buyerUnreadCount'
+          : 'sellerUnreadCount';
+      await updateDoc(chatDocRef.value, { [field]: 0 });
+    };
+
     const formatDate = (timestamp) => {
       if (!timestamp) return '';
       const dateObj = timestamp.toDate();
