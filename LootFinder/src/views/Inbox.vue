@@ -73,7 +73,6 @@
             chats.value = [];
           }
         });
-        });
       });
 
       const fetchChats = async () => {
@@ -88,7 +87,11 @@
             orderBy('lastMessageTimestamp', 'desc')
           );
           const buyerChatsSnapshot = await getDocs(buyerChatsQuery);
-          chatList = await processChatDocs(buyerChatsSnapshot, userId, chatList);
+          chatList = await processChatDocs(
+            buyerChatsSnapshot,
+            userId,
+            chatList
+          );
 
           const sellerChatsQuery = query(
             collection(db, 'chats'),
@@ -96,7 +99,11 @@
             orderBy('lastMessageTimestamp', 'desc')
           );
           const sellerChatsSnapshot = await getDocs(sellerChatsQuery);
-          chatList = await processChatDocs(sellerChatsSnapshot, userId, chatList);
+          chatList = await processChatDocs(
+            sellerChatsSnapshot,
+            userId,
+            chatList
+          );
 
           chatList.sort((a, b) => {
             if (!a.lastMessageTimestamp) return 1;
