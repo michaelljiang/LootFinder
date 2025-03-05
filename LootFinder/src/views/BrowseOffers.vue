@@ -26,13 +26,14 @@
         placeholder="Max Price"
         class="w-full sm:w-32 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
       />
-      <InputMap @updateLatLng="updateLocation" />
-      <input
-        type="number"
-        v-model.number="radius"
-        placeholder="Radius (km)"
-        class="w-full sm:w-32 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+
+      <!-- Distance Filter Popup -->
+      <DistanceFilterPopup
+        :currentRadius="radius"
+        :currentLocation="userLocation"
+        @update-filter="handleDistanceFilter"
       />
+
       <button
         @click="resetFilters"
         class="w-full sm:w-auto p-2 bg-[#ea7643] text-white rounded shadow hover:bg-[#eb8e65] transition"
@@ -63,6 +64,21 @@
         :image="selectedOffer.image"
         :sellerId="selectedOffer.sellerId"
       />
+    </div>
+
+    <!-- Distance Filter Indicator -->
+    <div v-if="userLocation && radius" class="mb-4 text-center">
+      <div
+        class="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full"
+      >
+        Filtering by: {{ radius }}km radius
+        <button
+          @click="clearDistanceFilter"
+          class="ml-2 text-red-600 hover:text-red-800"
+        >
+          ×
+        </button>
+      </div>
     </div>
 
     <!-- Offers List -->
@@ -153,17 +169,17 @@
     deleteDoc,
   } from 'firebase/firestore';
   import { db } from '@/firebase';
-  import { fetchItemWithSeller } from '@/firebaseService'; // Import the function
+  import { fetchItemWithSeller } from '@/firebaseService';
   import OfferCard from '@/components/OfferCard.vue';
   import BrowseMap from '@/components/BrowseMap.vue';
-  import InputMap from '@/components/InputMap.vue';
+  import DistanceFilterPopup from '@/components/DistanceFilterPopup.vue';
 
   export default {
     name: 'BrowseOffers',
     components: {
       OfferCard,
       BrowseMap,
-      InputMap,
+      DistanceFilterPopup,
     },
     data() {
       return {
@@ -232,12 +248,15 @@
           console.error('Error fetching active offers:', error.message);
         }
       },
-      updateLocation(newLocation) {
-        this.userLocation = newLocation;
-        console.log('User Location:', this.userLocation); // Log the location to debug
+      handleDistanceFilter(filterData) {
+        this.userLocation = filterData.location;
+        this.radius = filterData.radius;
+      },
+      clearDistanceFilter() {
+        this.userLocation = null;
+        this.radius = null;
       },
       calculateDistance(loc1, loc2) {
-        console.log('Calculating distance:', loc1, loc2); // Log the locations to debug
         if (
           !loc1 ||
           !loc2 ||
@@ -246,7 +265,6 @@
           !loc2.lat ||
           !loc2.lng
         ) {
-          console.warn('Invalid coordinates:', loc1, loc2);
           return Infinity; // Prevent filtering out all offers
         }
 
