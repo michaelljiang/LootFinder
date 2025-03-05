@@ -55,10 +55,19 @@
           >
             Select Image
           </label>
-          <input type="file" id="image" class="hidden" @change="handleFileUpload"/>
-          <span v-if="fileName" class="my-1 text-sm text-border">{{ fileName }}</span>
+          <input
+            type="file"
+            id="image"
+            class="hidden"
+            @change="handleFileUpload"
+          />
+          <span v-if="fileName" class="my-1 text-sm text-border">
+            {{ fileName }}
+          </span>
         </div>
-        <span v-if="imageError" class="text-red-500 text-sm">{{ imageError}}</span>
+        <span v-if="imageError" class="text-red-500 text-sm">
+          {{ imageError }}
+        </span>
       </div>
       <!-- ************************** Title ********************************* -->
       <div class="flex flex-col items-center">
@@ -68,7 +77,9 @@
         >
           Title
         </label>
-        <span v-if="titleError" class="text-red-500 text-sm">{{ titleError }}</span>
+        <span v-if="titleError" class="text-red-500 text-sm">
+          {{ titleError }}
+        </span>
         <input
           type="text"
           id="title"
@@ -84,7 +95,9 @@
         >
           Give a Description
         </label>
-        <span v-if="descriptionError" class="text-red-500 text-sm">{{ descriptionError }}</span>
+        <span v-if="descriptionError" class="text-red-500 text-sm">
+          {{ descriptionError }}
+        </span>
         <textarea
           id="description"
           v-model="form.description"
@@ -132,7 +145,9 @@
         />
       </div>
       <div class="flex items-center justify-center">
-          <span v-if="priceError" class="text-red-500 text-sm">{{ priceError }}</span>
+        <span v-if="priceError" class="text-red-500 text-sm">
+          {{ priceError }}
+        </span>
       </div>
       <!-- ************************** Cancel/Submit ********************************* -->
       <div class="flex justify-center">
@@ -237,15 +252,21 @@
           this.priceError = 'Price is required and must be positive.';
         }
 
-        if (!this.form.latitude || !this.form.longitude){
+        if (!this.form.latitude || !this.form.longitude) {
           this.locationError = 'Please select a location.';
         }
 
-        if(!this.form.image){
-          this.imageError= 'Image is required.';
+        if (!this.form.image) {
+          this.imageError = 'Image is required.';
         }
 
-       if (this.titleError || this.descriptionError || this.priceError || this.locationError || this.imageError) {
+        if (
+          this.titleError ||
+          this.descriptionError ||
+          this.priceError ||
+          this.locationError ||
+          this.imageError
+        ) {
           return;
         }
         try {

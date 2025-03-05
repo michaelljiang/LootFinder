@@ -12,6 +12,7 @@ import Inbox from '@/views/Inbox.vue';
 import BrowseBounties from '@/views/BrowseBounties.vue';
 import CreateBounty from '@/views/CreateBounty.vue';
 import CreateOptions from '@/views/CreateOptions.vue';
+import Browse from '@/views/Browse.vue';
 
 const routes = [
   {
@@ -52,6 +53,12 @@ const routes = [
     path: '/profile',
     name: 'UserProfile',
     component: UserProfile,
+    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
+  },
+  {
+    path: '/browse',
+    name: 'Browse',
+    component: Browse,
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
   {
