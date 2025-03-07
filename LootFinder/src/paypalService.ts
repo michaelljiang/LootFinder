@@ -30,7 +30,7 @@ export async function createOrder(amount: string, currency: string, payeeEmail: 
             value: amount
         },
         payee: {
-            email_address: payeeEmail
+            email_address: "sb-447plk38333745@business.example.com" //change this to payeeEmail
         }
         }]
     }, {
