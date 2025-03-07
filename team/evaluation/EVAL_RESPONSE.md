@@ -46,7 +46,3 @@ ReadME is good and works well, Kanban Board can be optimized to remove unused co
 
 ## The other team's final closing thoughts: something they liked, the most impactful opportunity for improvement, and one more thing they thought was good.
 Team seems aware of most issues. Not sure about plans for dashboard. Probably low priority, but would like to see a better UI/UX. Possibly show items that you have made offers/negotiations on.
-
-
-
-
