@@ -17,6 +17,7 @@
                 :title="user.title" 
                 :image="user.image" 
                 :sellerId="user.sellerId" 
+                :amount="0.01"
             />
         </div>
     </div>
