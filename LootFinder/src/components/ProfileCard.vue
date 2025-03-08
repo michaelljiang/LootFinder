@@ -32,6 +32,12 @@
 
     <!-- PayPal Button Container -->
     <div v-if="showPayPalButton" class="mt-4">
+        <input 
+        v-model="amount" 
+        type="number" 
+        placeholder="Enter amount" 
+        class="w-full p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
+        />
         <PayPalButton 
             :amount="amount" 
             currency="USD" 
