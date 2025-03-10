@@ -5,11 +5,9 @@ import Dashboard from '@/views/Dashboard.vue';
 import CreateOffer from '@/views/CreateOffer.vue';
 import { auth } from '@/firebase'; // Import Firebase Auth
 import UserProfile from '@/views/UserProfile.vue';
-import BrowseOffers from '@/views/BrowseOffers.vue';
 import UpdateOffers from '@/views/UpdateOffers.vue';
 import ChatView from '@/views/ChatView.vue';
 import Inbox from '@/views/Inbox.vue';
-import BrowseBounties from '@/views/BrowseBounties.vue';
 import CreateBounty from '@/views/CreateBounty.vue';
 import CreateOptions from '@/views/CreateOptions.vue';
 import Browse from '@/views/Browse.vue';
@@ -59,12 +57,6 @@ const routes = [
     path: '/browse',
     name: 'Browse',
     component: Browse,
-    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
-  },
-  {
-    path: '/browse-bounties',
-    name: 'Browse Bounties',
-    component: BrowseBounties,
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
   {
