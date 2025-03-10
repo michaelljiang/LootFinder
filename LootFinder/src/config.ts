@@ -1,6 +1,6 @@
 export default {
-  mapsKey: 'AIzaSyCveSF9OnuC4MYIzBGLKEPeIic3prbxgjg',
-  apiKey: 'AIzaSyDjGNk-GxJfFi1dCAxSIdvQAJnrIHwhkcU',
+  mapsKey: import.meta.env.VITE_MAPS_KEY,
+  apiKey: import.meta.env.VITE_API_KEY,
   authDomain: 'loot-finder-7063b.firebaseapp.com',
   projectId: 'loot-finder-7063b',
   storageBucket: 'loot-finder-7063b.firebasestorage.app',

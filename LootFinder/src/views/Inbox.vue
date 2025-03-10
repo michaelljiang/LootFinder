@@ -1,12 +1,13 @@
 <template>
   <div class="p-4 min-h-screen bg-gray-100">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Inbox</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Inbox</h1>
 
-    <div v-if="loading" class="text-gray-500">Loading conversations...</div>
-    <div v-else-if="chats.length === 0" class="text-gray-500">
+    <div v-if="loading" class="flex justify-center">
+      <LoadingScreen />
+    </div>
+    <div v-else-if="chats.length === 0" class="text-gray-500 text-center">
       No conversations yet.
     </div>
-
     <div v-else class="space-y-4">
       <div
         v-for="chat in chats"
@@ -20,14 +21,12 @@
           alt="Item"
           class="w-12 h-12 rounded-lg object-cover mr-3"
         />
-
         <div class="flex-1">
           <h2 class="font-bold text-gray-800">{{ chat.otherUserName }}</h2>
           <p class="text-gray-600 text-sm truncate">
             {{ chat.lastMessage || 'No messages yet' }}
           </p>
         </div>
-
         <!-- Timestamp -->
         <span class="text-xs text-gray-500">
           {{ formatTimestamp(chat.lastMessageTimestamp) }}
@@ -46,21 +45,24 @@
     doc,
     getDoc,
     orderBy,
+    updateDoc,
   } from 'firebase/firestore';
   import { db } from '@/firebase';
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
   import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
-
+  import LoadingScreen from '@/components/LoadingScreen.vue';
   export default {
     name: 'Inbox',
+    components: {
+      LoadingScreen,
+    },
     setup() {
       const router = useRouter();
       const auth = getAuth();
       const currentUser = ref(null);
       const chats = ref([]);
       const loading = ref(true);
-
       onMounted(() => {
         onAuthStateChanged(auth, (user) => {
           if (user) {
@@ -75,12 +77,10 @@
 
       const fetchChats = async () => {
         if (!currentUser.value) return;
-
         try {
           const userId = currentUser.value.uid;
           let chatList = [];
 
-          // Fetch chats where user is the buyer
           const buyerChatsQuery = query(
             collection(db, 'chats'),
             where('buyerId', '==', userId),
@@ -93,7 +93,6 @@
             chatList
           );
 
-          // Fetch chats where user is the seller
           const sellerChatsQuery = query(
             collection(db, 'chats'),
             where('sellerId', '==', userId),
@@ -106,18 +105,20 @@
             chatList
           );
 
-          // Sort combined chats manually in case some don't have timestamps
-          chats.value = chatList.sort((a, b) => {
-            if (!a.lastMessageTimestamp) return 1; // Move empty chats to the bottom
+          chatList.sort((a, b) => {
+            if (!a.lastMessageTimestamp) return 1;
             if (!b.lastMessageTimestamp) return -1;
             return (
               b.lastMessageTimestamp.toMillis() -
               a.lastMessageTimestamp.toMillis()
             );
           });
+
           chats.value = chatList.filter(
             (chat) => chat.otherUserId !== userId && chat.lastMessage !== ''
           );
+
+          clearUnreadCounts();
         } catch (error) {
           console.error('Error fetching conversations:', error);
         } finally {
@@ -128,32 +129,50 @@
       const processChatDocs = async (querySnapshot, userId, chatList) => {
         for (const chatDoc of querySnapshot.docs) {
           const chatData = chatDoc.data();
-
-          // Get the other user's ID (buyer or seller)
           const otherUserId =
             chatData.sellerId === userId ? chatData.buyerId : chatData.sellerId;
 
-          // Fetch the other user's name from Firestore (from "user" collection)
           const userRef = doc(db, 'user', otherUserId);
           const userSnap = await getDoc(userRef);
           const otherUserName = userSnap.exists()
             ? userSnap.data().displayName || 'Unknown User'
             : 'Unknown User';
-
-          // Fetch the item details from Firestore (from "offer" collection)
-          const itemRef = doc(db, 'offer', chatData.itemId);
-          const itemSnap = await getDoc(itemRef);
-          const itemImage = itemSnap.exists() ? itemSnap.data().image : null;
-
+          let image = null;
+          if (chatData.itemId) {
+            const itemRef = doc(db, 'offer', chatData.itemId);
+            const itemSnap = await getDoc(itemRef);
+            image = itemSnap.exists() ? itemSnap.data().image : null;
+          } else if (chatData.bountyId) {
+            const bountyRef = doc(db, 'bounty', chatData.bountyId);
+            const bountySnap = await getDoc(bountyRef);
+            image = bountySnap.exists() ? bountySnap.data().image : null;
+          }
           chatList.push({
             id: chatDoc.id,
             otherUserName,
             lastMessage: chatData.lastMessage,
             lastMessageTimestamp: chatData.lastMessageTimestamp,
-            itemImage,
+            itemImage: image,
+            isBounty: !!chatData.bountyId,
+            buyerId: chatData.buyerId,
+            sellerId: chatData.sellerId,
+            otherUserId, // for filtering purposes
           });
         }
         return chatList;
+      };
+
+      const clearUnreadCounts = async () => {
+        if (!currentUser.value) return;
+        const userId = currentUser.value.uid;
+        for (const chat of chats.value) {
+          const chatRef = doc(db, 'chats', chat.id);
+          if (userId === chat.buyerId) {
+            await updateDoc(chatRef, { buyerUnreadCount: 0 });
+          } else if (userId === chat.sellerId) {
+            await updateDoc(chatRef, { sellerUnreadCount: 0 });
+          }
+        }
       };
 
       const goToChat = (chatId) => {

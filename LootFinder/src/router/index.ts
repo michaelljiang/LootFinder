@@ -7,9 +7,12 @@ import { auth } from '@/firebase'; // Import Firebase Auth
 import UserProfile from '@/views/UserProfile.vue';
 import BrowseOffers from '@/views/BrowseOffers.vue';
 import UpdateOffers from '@/views/UpdateOffers.vue';
-import SearchBar from '@/views/SearchBar.vue';
 import ChatView from '@/views/ChatView.vue';
 import Inbox from '@/views/Inbox.vue';
+import BrowseBounties from '@/views/BrowseBounties.vue';
+import CreateBounty from '@/views/CreateBounty.vue';
+import CreateOptions from '@/views/CreateOptions.vue';
+import Browse from '@/views/Browse.vue';
 
 const routes = [
   {
@@ -23,14 +26,15 @@ const routes = [
     component: Login,
   },
   {
-    path: '/search-bar',
-    name: 'Search Bar',
-    component: SearchBar,
-  },
-  {
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
+    path: '/create',
+    name: 'CreateOptions',
+    component: CreateOptions,
     meta: { requiresAuth: true }, // Route requires authentication
   },
   {
@@ -40,15 +44,33 @@ const routes = [
     meta: { requiresAuth: true }, // Route requires authentication
   },
   {
+    path: '/post-bounty',
+    name: 'Post Bounty',
+    component: CreateBounty,
+    meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
     path: '/profile',
     name: 'UserProfile',
     component: UserProfile,
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
   {
+    path: '/browse',
+    name: 'Browse',
+    component: Browse,
+    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
+  },
+  {
     path: '/browse-offers',
     name: 'Browse Offers',
     component: BrowseOffers,
+    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
+  },
+  {
+    path: '/browse-bounties',
+    name: 'Browse Bounties',
+    component: BrowseBounties,
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
   {

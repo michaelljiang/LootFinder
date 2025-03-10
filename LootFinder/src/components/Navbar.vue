@@ -10,7 +10,6 @@
               alt="Logo"
             />
           </router-link>
-
           <!-- Mobile menu button -->
           <div class="flex lg:hidden">
             <button
@@ -28,13 +27,8 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M4 8h16M4 16h16"
-                />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
               </svg>
-
               <svg
                 v-else
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,16 +38,11 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
         </div>
-
         <div
           :class="[
             isOpen
@@ -64,28 +53,22 @@
         >
           <div class="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8">
             <router-link
-              to="/search-bar"
-              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
-            >
-              Search
-            </router-link>
-            <router-link
               to="/browse-offers"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Browse Offers
             </router-link>
             <router-link
-              to="/dashboard"
+              to="/browse"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
-              Dashboard
+              Browse
             </router-link>
             <router-link
-              to="/create-offer"
+              to="/create"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
-              Create Offer
+              Create Listing
             </router-link>
             <router-link
               to="/update-offers"
@@ -95,12 +78,18 @@
             </router-link>
             <router-link
               to="/inbox"
-              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              @click.native="clearUnreadCounts"
+              class="relative px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Inbox
+              <span
+                v-if="unreadCount > 0"
+                class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+              >
+                {{ unreadCount }}
+              </span>
             </router-link>
           </div>
-
           <div class="flex items-center mt-4 lg:mt-0">
             <!-- Display login button if user is not logged in -->
             <template v-if="!user">
@@ -111,14 +100,15 @@
                 Login
               </button>
             </template>
-
             <!-- Display profile picture if user is logged in -->
             <template v-else>
-              <router-link 
+              <router-link
                 to="/profile"
                 class="px-3 py-2 -mx-3 -my-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white flex items-center w-full lg:mx-1 lg:my-1"
               >
-                <div class="w-8 h-8 rounded-full border-2 border-gray-400 overflow-hidden flex-shrink-0">
+                <div
+                  class="w-8 h-8 rounded-full border-2 border-gray-400 overflow-hidden flex-shrink-0"
+                >
                   <img
                     :src="user?.photoURL || 'https://via.placeholder.com/150'"
                     class="object-cover w-full h-full aspect-square"
@@ -138,50 +128,104 @@
 </template>
 
 <script>
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signInWithPopup,
-    GoogleAuthProvider,
-  } from 'firebase/auth';
-  import { ref, onMounted } from 'vue';
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from 'firebase/auth';
+import { collection, query, where, onSnapshot, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { db } from '@/firebase';
+import { ref, computed, onMounted } from 'vue';
 
-  export default {
-    name: 'Navbar',
-    setup() {
-      const user = ref(null);
-      const isOpen = ref(false);
-      const auth = getAuth();
+export default {
+  name: 'Navbar',
+  setup() {
+    const user = ref(null);
+    const isOpen = ref(false);
+    const buyerUnread = ref(0);
+    const sellerUnread = ref(0);
+    const unreadCount = computed(() => buyerUnread.value + sellerUnread.value);
+    const auth = getAuth();
 
-      // Watch for authentication state changes
-      onMounted(() => {
-        onAuthStateChanged(auth, (currentUser) => {
-          if (currentUser) {
-            user.value = {
-              displayName: currentUser.displayName,
-              photoURL: currentUser.photoURL,
-            };
-          } else {
-            user.value = null;
-          }
-        });
-      });
-
-      // Login method
-      const login = async () => {
-        try {
-          const provider = new GoogleAuthProvider();
-          const result = await signInWithPopup(auth, provider);
+    onMounted(() => {
+      onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
           user.value = {
-            displayName: result.user.displayName,
-            photoURL: result.user.photoURL,
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
           };
-        } catch (error) {
-          console.error('Login failed:', error.message);
-        }
-      };
 
-      return { user, isOpen, login };
-    },
-  };
+          const buyerChatsQuery = query(
+            collection(db, 'chats'),
+            where('buyerId', '==', currentUser.uid)
+          );
+          onSnapshot(buyerChatsQuery, (snapshot) => {
+            let sum = 0;
+            snapshot.forEach((doc) => {
+              const data = doc.data();
+              sum += data.buyerUnreadCount || 0;
+            });
+            buyerUnread.value = sum;
+          });
+
+          const sellerChatsQuery = query(
+            collection(db, 'chats'),
+            where('sellerId', '==', currentUser.uid)
+          );
+          onSnapshot(sellerChatsQuery, (snapshot) => {
+            let sum = 0;
+            snapshot.forEach((doc) => {
+              const data = doc.data();
+              sum += data.sellerUnreadCount || 0;
+            });
+            sellerUnread.value = sum;
+          });
+        } else {
+          user.value = null;
+        }
+      });
+    });
+
+    const login = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        user.value = {
+          uid: result.user.uid,
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+        };
+      } catch (error) {
+        console.error('Login failed:', error.message);
+      }
+    };
+    
+    const clearUnreadCounts = async () => {
+      if (!user.value) return;
+      const userId = user.value.uid;
+      const buyerChatsQuery = query(
+        collection(db, 'chats'),
+        where('buyerId', '==', userId)
+      );
+      const buyerSnapshot = await getDocs(buyerChatsQuery);
+      buyerSnapshot.forEach((docSnap) => {
+        const chatRef = doc(db, 'chats', docSnap.id);
+        updateDoc(chatRef, { buyerUnreadCount: 0 });
+      });
+      const sellerChatsQuery = query(
+        collection(db, 'chats'),
+        where('sellerId', '==', userId)
+      );
+      const sellerSnapshot = await getDocs(sellerChatsQuery);
+      sellerSnapshot.forEach((docSnap) => {
+        const chatRef = doc(db, 'chats', docSnap.id);
+        updateDoc(chatRef, { sellerUnreadCount: 0 });
+      });
+    };
+
+    return { user, isOpen, login, unreadCount, clearUnreadCounts };
+  },
+};
 </script>
