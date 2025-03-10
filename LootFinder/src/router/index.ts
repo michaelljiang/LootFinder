@@ -13,6 +13,7 @@ import BrowseBounties from '@/views/BrowseBounties.vue';
 import CreateBounty from '@/views/CreateBounty.vue';
 import CreateOptions from '@/views/CreateOptions.vue';
 import Browse from '@/views/Browse.vue';
+import SearchBar from '@/views/SearchBar.vue';
 
 const routes = [
   {
@@ -95,6 +96,12 @@ const routes = [
     path: '/inbox',
     name: 'Inbox',
     component: Inbox,
+    meta: { requiresAuth: true }, // Route requires authentication
+  },
+  {
+    path: '/SearchBar',
+    name: 'SearchBar',
+    component: SearchBar,
     meta: { requiresAuth: true }, // Route requires authentication
   },
 ];
