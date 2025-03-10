@@ -57,11 +57,21 @@
         </button>
         </div>
       </div>
-      <DescriptionModal
-      v-if="showDescription"
-      :description="description"
-      @close="toggleDescription"
-    />
+    </div>
+    <div v-if="showDescription" class="fixed inset-0 flex items-center justify-center z-50"
+    style="background: rgba(0, 0, 0, 0.3);">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Description</h2>
+        <p class="text-gray-800">{{ description }}</p>
+        <div class="flex justify-end space-x-3 mt-6">
+          <button
+            @click="toggleDescription"
+            class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
