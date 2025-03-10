@@ -62,12 +62,6 @@ const routes = [
     meta: { requiresAuth: true }, // Optional: Only allow logged-in users
   },
   {
-    path: '/browse-offers',
-    name: 'Browse Offers',
-    component: BrowseOffers,
-    meta: { requiresAuth: true }, // Optional: Only allow logged-in users
-  },
-  {
     path: '/browse-bounties',
     name: 'Browse Bounties',
     component: BrowseBounties,

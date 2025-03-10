@@ -53,12 +53,6 @@
         >
           <div class="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8">
             <router-link
-              to="/browse-offers"
-              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
-            >
-              Browse Offers
-            </router-link>
-            <router-link
               to="/browse"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >

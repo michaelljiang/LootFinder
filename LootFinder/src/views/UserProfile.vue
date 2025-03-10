@@ -85,7 +85,7 @@
       };
 
       const goToHome = () => {
-        router.push('/browse-offers');
+        router.push('/browse');
       };
 
       return { user, logout, goToLogin, goToHome };

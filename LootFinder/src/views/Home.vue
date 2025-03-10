@@ -178,13 +178,13 @@
           // Retrieve Firestore Instance
           const userDocRef = doc(db, 'user', currentUser.uid);
           const userDoc = await getDoc(userDocRef);
-          this.$router.push('/browse-offers'); // Redirect after login
+          this.$router.push('/browse'); // Redirect after login
         } catch (error) {
           console.error('Error logging in:', error.message);
         }
       },
       redirectToBrowseOffers() {
-        this.$router.push('/browse-offers'); // Change to your desired redirect page
+        this.$router.push('/browse'); // Change to your desired redirect page
       },
       redirectToCreateOffer() {
         this.$router.push('/create-offer'); // Change to your desired redirect page
