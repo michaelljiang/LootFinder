@@ -27,7 +27,11 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M4 8h16M4 16h16"
+                />
               </svg>
               <svg
                 v-else
@@ -38,7 +42,11 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -52,12 +60,12 @@
           class="absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center"
         >
           <div class="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8">
-            <router-link
+            <!-- <router-link
               to="/browse-offers"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Browse Offers
-            </router-link>
+            </router-link> -->
             <router-link
               to="/browse"
               class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
@@ -128,104 +136,114 @@
 </template>
 
 <script>
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from 'firebase/auth';
-import { collection, query, where, onSnapshot, getDocs, updateDoc, doc } from 'firebase/firestore';
-import { db } from '@/firebase';
-import { ref, computed, onMounted } from 'vue';
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signInWithPopup,
+    GoogleAuthProvider,
+  } from 'firebase/auth';
+  import {
+    collection,
+    query,
+    where,
+    onSnapshot,
+    getDocs,
+    updateDoc,
+    doc,
+  } from 'firebase/firestore';
+  import { db } from '@/firebase';
+  import { ref, computed, onMounted } from 'vue';
 
-export default {
-  name: 'Navbar',
-  setup() {
-    const user = ref(null);
-    const isOpen = ref(false);
-    const buyerUnread = ref(0);
-    const sellerUnread = ref(0);
-    const unreadCount = computed(() => buyerUnread.value + sellerUnread.value);
-    const auth = getAuth();
+  export default {
+    name: 'Navbar',
+    setup() {
+      const user = ref(null);
+      const isOpen = ref(false);
+      const buyerUnread = ref(0);
+      const sellerUnread = ref(0);
+      const unreadCount = computed(
+        () => buyerUnread.value + sellerUnread.value
+      );
+      const auth = getAuth();
 
-    onMounted(() => {
-      onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
+      onMounted(() => {
+        onAuthStateChanged(auth, (currentUser) => {
+          if (currentUser) {
+            user.value = {
+              uid: currentUser.uid,
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL,
+            };
+
+            const buyerChatsQuery = query(
+              collection(db, 'chats'),
+              where('buyerId', '==', currentUser.uid)
+            );
+            onSnapshot(buyerChatsQuery, (snapshot) => {
+              let sum = 0;
+              snapshot.forEach((doc) => {
+                const data = doc.data();
+                sum += data.buyerUnreadCount || 0;
+              });
+              buyerUnread.value = sum;
+            });
+
+            const sellerChatsQuery = query(
+              collection(db, 'chats'),
+              where('sellerId', '==', currentUser.uid)
+            );
+            onSnapshot(sellerChatsQuery, (snapshot) => {
+              let sum = 0;
+              snapshot.forEach((doc) => {
+                const data = doc.data();
+                sum += data.sellerUnreadCount || 0;
+              });
+              sellerUnread.value = sum;
+            });
+          } else {
+            user.value = null;
+          }
+        });
+      });
+
+      const login = async () => {
+        try {
+          const provider = new GoogleAuthProvider();
+          const result = await signInWithPopup(auth, provider);
           user.value = {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
+            uid: result.user.uid,
+            displayName: result.user.displayName,
+            photoURL: result.user.photoURL,
           };
-
-          const buyerChatsQuery = query(
-            collection(db, 'chats'),
-            where('buyerId', '==', currentUser.uid)
-          );
-          onSnapshot(buyerChatsQuery, (snapshot) => {
-            let sum = 0;
-            snapshot.forEach((doc) => {
-              const data = doc.data();
-              sum += data.buyerUnreadCount || 0;
-            });
-            buyerUnread.value = sum;
-          });
-
-          const sellerChatsQuery = query(
-            collection(db, 'chats'),
-            where('sellerId', '==', currentUser.uid)
-          );
-          onSnapshot(sellerChatsQuery, (snapshot) => {
-            let sum = 0;
-            snapshot.forEach((doc) => {
-              const data = doc.data();
-              sum += data.sellerUnreadCount || 0;
-            });
-            sellerUnread.value = sum;
-          });
-        } else {
-          user.value = null;
+        } catch (error) {
+          console.error('Login failed:', error.message);
         }
-      });
-    });
+      };
 
-    const login = async () => {
-      try {
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        user.value = {
-          uid: result.user.uid,
-          displayName: result.user.displayName,
-          photoURL: result.user.photoURL,
-        };
-      } catch (error) {
-        console.error('Login failed:', error.message);
-      }
-    };
-    
-    const clearUnreadCounts = async () => {
-      if (!user.value) return;
-      const userId = user.value.uid;
-      const buyerChatsQuery = query(
-        collection(db, 'chats'),
-        where('buyerId', '==', userId)
-      );
-      const buyerSnapshot = await getDocs(buyerChatsQuery);
-      buyerSnapshot.forEach((docSnap) => {
-        const chatRef = doc(db, 'chats', docSnap.id);
-        updateDoc(chatRef, { buyerUnreadCount: 0 });
-      });
-      const sellerChatsQuery = query(
-        collection(db, 'chats'),
-        where('sellerId', '==', userId)
-      );
-      const sellerSnapshot = await getDocs(sellerChatsQuery);
-      sellerSnapshot.forEach((docSnap) => {
-        const chatRef = doc(db, 'chats', docSnap.id);
-        updateDoc(chatRef, { sellerUnreadCount: 0 });
-      });
-    };
+      const clearUnreadCounts = async () => {
+        if (!user.value) return;
+        const userId = user.value.uid;
+        const buyerChatsQuery = query(
+          collection(db, 'chats'),
+          where('buyerId', '==', userId)
+        );
+        const buyerSnapshot = await getDocs(buyerChatsQuery);
+        buyerSnapshot.forEach((docSnap) => {
+          const chatRef = doc(db, 'chats', docSnap.id);
+          updateDoc(chatRef, { buyerUnreadCount: 0 });
+        });
+        const sellerChatsQuery = query(
+          collection(db, 'chats'),
+          where('sellerId', '==', userId)
+        );
+        const sellerSnapshot = await getDocs(sellerChatsQuery);
+        sellerSnapshot.forEach((docSnap) => {
+          const chatRef = doc(db, 'chats', docSnap.id);
+          updateDoc(chatRef, { sellerUnreadCount: 0 });
+        });
+      };
 
-    return { user, isOpen, login, unreadCount, clearUnreadCounts };
-  },
-};
+      return { user, isOpen, login, unreadCount, clearUnreadCounts };
+    },
+  };
 </script>
