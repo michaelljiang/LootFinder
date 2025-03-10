@@ -17,9 +17,7 @@
         >
           {{ title }}
         </h1>
-        <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-          {{ description }}
-        </p>
+        
       </div>
 
       <div class="flex-1 relative">
@@ -44,14 +42,26 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
           </svg>
         </button> -->
-
+        <div class="flex gap-4">
+        <button
+          @click="toggleDescription"
+          class="px-2 py-2 text-xs font-semibold text-black uppercase bg-[#ea7643] rounded hover:bg-[#eb8e65] transition"
+        >
+          Description
+        </button>
         <button
           @click="openChat"
           class="px-2 py-2 text-xs font-semibold text-black uppercase bg-[#ea7643] rounded hover:bg-[#eb8e65] transition"
         >
           Message
         </button>
+        </div>
       </div>
+      <DescriptionModal
+      v-if="showDescription"
+      :description="description"
+      @close="toggleDescription"
+    />
     </div>
   </div>
 </template>
@@ -69,9 +79,14 @@
   import { useRouter } from 'vue-router';
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
   import { ref, onMounted } from 'vue';
+  import DescriptionModal from './DescriptionModal.vue';
+
 
   export default {
     name: 'OfferCard',
+    components: {
+      DescriptionModal
+    },
     props: {
       id: { type: String, required: true }, // itemId
       title: { type: String, required: true },
@@ -84,6 +99,7 @@
       const router = useRouter();
       const auth = getAuth();
       const currentUser = ref(null);
+      const showDescription = ref(false);
 
       // Track authentication state
       onMounted(() => {
@@ -91,6 +107,10 @@
           currentUser.value = user;
         });
       });
+
+      const toggleDescription = () => {
+      showDescription.value = !showDescription.value;
+    };
 
       const openChat = async () => {
         if (!currentUser.value) {
@@ -135,7 +155,8 @@
         }
       };
 
-      return { openChat };
+      return { openChat, toggleDescription, showDescription };
+
     },
   };
 </script>
