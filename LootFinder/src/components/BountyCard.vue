@@ -2,35 +2,35 @@
   <div class="relative flex items-center justify-center">
     <!-- Wanted Poster Background -->
     <div
-      class="absolute w-80 h-104 bg-[#F5DEB3] rounded-lg shadow-2xl border-1 border-brown-700 flex flex-col items-center text-center z-0 before:absolute before:w-full before:bg-gradient-to-b before:from-[#E8C08F] before:to-transparent after:absolute after:w-full after:bg-gradient-to-t after:from-[#E8C08F] after:to-transparent"
+      class="absolute w-80 h-104 bg-nav rounded-lg shadow-2xflex flex-col items-center text-center z-0"
     ></div>
     <div class="w-72 h-96 overflow-hidden rounded-lg flex flex-col z-10">
       <div class="px-4 py-2">
-        <h1 class="text-xl font-bold text-gray-800 uppercase truncate">
+        <h1 class="text-xl font-bold text-white uppercase truncate border-b-2 border-white">
           {{ title }}
         </h1>
-        <p class="mt-1 text-sm text-gray-600 line-clamp-2">
+        <p class="mt-1 text-sm text-white line-clamp-2">
           {{ description }}
         </p>
       </div>
 
       <div class="flex-1 relative">
         <img
-          class="absolute inset-0 w-full h-full object-cover"
+          class="absolute inset-0 w-full h-full object-cover rounded-lg"
           :src="image"
           :alt="title"
         />
       </div>
 
       <div
-        class="flex items-center justify-between bg-[#895129] px-4 py-2 mt-2"
+        class="flex items-center justify-between px-4 py-2 mt-2 rounded-xl border-2 border-white bg-white"
       >
-        <h1 class="text-lg font-bold text-gray-200 truncate flex-grow">
+        <h1 class="text-lg font-bold text-logoBrown truncate flex-grow">
           ${{ price }}
         </h1>
         <button
           @click="openChat"
-          class="px-2 py-2 text-xs font-semibold text-black uppercase bg-[#ea7643] rounded hover:bg-[#eb8e65] transition"
+          class="px-2 py-2 text-xs font-semibold text-black uppercase bg-[#ea7643] rounded-md hover:bg-[#eb8e65] transition"
         >
           Message
         </button>

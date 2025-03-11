@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto p-6 min-h-screen">
-    <h1 class="text-center text-3xl font-bold mb-6 text-[var(--color-heading)]">
+    <h1 class="text-center text-3xl font-bold mb-6 text-logoBrown">
       Manage Your Listings
     </h1>
 

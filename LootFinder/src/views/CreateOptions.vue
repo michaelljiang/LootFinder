@@ -1,13 +1,9 @@
 <template>
   <div class="mx-auto p-6 max-w-4xl">
-    <h1 class="text-2xl font-bold text-center text-textPrimary mb-8">
-      What would you like to create?
-    </h1>
-
-    <div class="grid md:grid-cols-2 gap-8">
+    <div class="grid md:grid-cols-2 gap-8 m-16">
       <!-- Create Offer Option -->
       <div
-        class="bg-gray-100 p-6 rounded-2xl shadow-lg border-border border-2 flex flex-col min-h-[320px] hover:shadow-xl transition-shadow duration-300"
+        class="bg-lightGray p-6 rounded-2xl shadow-lg border-border border-2 flex flex-col min-h-[320px] hover:shadow-xl transition-shadow duration-300"
       >
         <div class="mb-4 text-center">
           <svg
@@ -40,7 +36,7 @@
 
       <!-- Post Bounty Option -->
       <div
-        class="bg-gray-100 p-6 rounded-2xl shadow-lg border-border border-2 flex flex-col min-h-[320px] hover:shadow-xl transition-shadow duration-300"
+        class="bg-lightGray p-6 rounded-2xl shadow-lg border-border border-2 flex flex-col min-h-[320px] hover:shadow-xl transition-shadow duration-300"
       >
         <div class="mb-4 text-center">
           <svg

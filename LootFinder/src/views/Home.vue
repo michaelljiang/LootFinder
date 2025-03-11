@@ -29,7 +29,7 @@
       ></div>
     </div>
 
-    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+    <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-44">
       <div class="sm:mb-8 sm:flex sm:justify-center">
         <div
         class="relative flex items-center mx-auto gap-2 rounded-full px-4 py-2 text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 w-max"   

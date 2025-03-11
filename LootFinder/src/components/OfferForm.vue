@@ -1,6 +1,6 @@
 <template>
   <div
-    class="form-container mx-auto p-6 rounded-2xl shadow-lg border-border border-2"
+    class="form-container mx-auto p-6 rounded-2xl shadow-lg border-border border-2 "
   >
     <form @submit.prevent="handleSubmit" class="space-y-4">
       <!-- ************************** Image ********************************* -->
@@ -154,7 +154,7 @@
         <button
           type="button"
           @click="cancel"
-          class="px-4 py-2 bg-gray-200 text-textBody rounded-2xl font-semibold hover:bg-gray-300"
+          class="px-4 py-2 bg-white text-textBody rounded-2xl font-semibold hover:bg-gray-300"
         >
           Cancel
         </button>
