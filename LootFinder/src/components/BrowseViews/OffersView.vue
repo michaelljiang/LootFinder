@@ -2,7 +2,7 @@
   <div>
     <!-- Map and Selected Offer Display -->
     <div
-      class="mb-6 flex flex-col sm:flex-row gap-6 justify-center items-start"
+      class="mb-6 flex flex-col sm:flex-row gap-6 justify-center items-center"
     >
       <!-- Map -->
       <BrowseMap
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Offers List -->
-    <div class="flex flex-wrap justify-center items-stretch gap-10">
+    <div class="flex flex-wrap justify-center items-stretch gap-10 mt-10">
       <OfferCard
         v-for="item in filteredItems"
         :key="item.id"

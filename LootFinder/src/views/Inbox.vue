@@ -1,6 +1,6 @@
 <template>
-  <div class="p-4 min-h-screen bg-gray-100">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Inbox</h1>
+  <div class="p-4 min-h-screen ">
+    <h1 class="text-2xl font-bold text-logoBrown mb-4 text-center">Inbox</h1>
 
     <div v-if="loading" class="flex justify-center">
       <LoadingScreen />

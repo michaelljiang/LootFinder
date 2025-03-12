@@ -1,6 +1,6 @@
 <template>
-  <div class="p-4 sm:p-6 bg-gray-100 min-h-screen">
-    <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-4">
+  <div class="p-4 sm:p-6 min-h-screen">
+    <h1 class="text-2xl sm:text-3xl font-bold text-center text-logoBrown mb-4">
       Browse Marketplace
     </h1>
 
@@ -10,10 +10,10 @@
         <button
           @click="activeView = 'offers'"
           :class="[
-            'px-4 py-2 text-sm font-medium rounded-l-lg',
+            'px-4 py-2 text-sm font-medium rounded-l-lg w-24',
             activeView === 'offers'
-              ? 'bg-[#ea7643] text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-50',
+              ? 'bg-nav text-white' 
+              : 'bg-lightGray text-logoBrown hover:bg-gray-200',
           ]"
         >
           Offers
@@ -21,10 +21,10 @@
         <button
           @click="activeView = 'bounties'"
           :class="[
-            'px-4 py-2 text-sm font-medium rounded-r-lg border-l',
+            'px-4 py-2 text-sm font-medium rounded-r-lg w-24',
             activeView === 'bounties'
-              ? 'bg-[#ea7643] text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-50',
+              ? 'bg-nav text-white'
+              : 'bg-lightGray text-logoBrown hover:bg-gray-200',
           ]"
         >
           Bounties
@@ -40,19 +40,19 @@
         type="text"
         v-model="searchTerm"
         placeholder="Search by title"
-        class="w-full sm:w-64 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+        class="w-full sm:w-32 p-2 rounded-md border-2 border-transparent bg-lightGray shadow-sm focus:outline-none focus:border-nav"
       />
       <input
         type="number"
         v-model.number="minPrice"
         placeholder="Min Price"
-        class="w-full sm:w-32 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+        class="w-full sm:w-32 p-2 rounded-md border-2 border-transparent bg-lightGray shadow-sm focus:outline-none focus:border-nav"
       />
       <input
         type="number"
         v-model.number="maxPrice"
         placeholder="Max Price"
-        class="w-full sm:w-32 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+        class="w-full sm:w-32 p-2 rounded-md border-2 border-transparent bg-lightGray shadow-sm focus:outline-none focus:border-nav"
       />
 
       <!-- Distance Filter Popup -->
@@ -64,7 +64,7 @@
 
       <button
         @click="resetFilters"
-        class="w-full sm:w-auto p-2 bg-[#ea7643] text-white rounded shadow hover:bg-[#eb8e65] transition"
+        class="w-full sm:w-auto p-2 bg-nav text-white rounded shadow hover:bg-[#eb8e65] transition border-orange"
       >
         Reset Filters
       </button>
