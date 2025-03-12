@@ -10,7 +10,7 @@
         <button
           @click="activeTab = 'offers'"
           :class="[
-            'px-4 py-2 text-sm font-medium rounded-l-lg',
+            'px-4 py-2 text-sm font-medium rounded-l-lg w-24',
             activeTab === 'offers'
               ? 'bg-[var(--color-nav)] text-white'
               : 'bg-white text-[var(--color-textPrimary)] hover:bg-gray-50',
@@ -21,7 +21,7 @@
         <button
           @click="activeTab = 'bounties'"
           :class="[
-            'px-4 py-2 text-sm font-medium rounded-r-lg border-l border-[var(--color-border)]',
+            'px-4 py-2 text-sm font-medium rounded-r-lg border-[var(--color-border)] w-24',
             activeTab === 'bounties'
               ? 'bg-[var(--color-nav)] text-white'
               : 'bg-white text-[var(--color-textPrimary)] hover:bg-gray-50',
@@ -48,7 +48,7 @@
         <li
           v-for="offer in offers"
           :key="offer.id"
-          class="border border-[var(--color-border)] rounded-lg p-5 shadow-md relative"
+          class="border-2 border-nav rounded-lg p-5 shadow-md relative"
           :class="{ 'opacity-80': offer.sold }"
           :style="{
             backgroundColor: offer.sold ? 'var(--color-background)' : '#fff',
@@ -126,7 +126,7 @@
         <li
           v-for="bounty in bounties"
           :key="bounty.id"
-          class="border border-[var(--color-border)] rounded-lg p-5 shadow-md relative"
+          class="border-2 border-nav rounded-lg p-5 shadow-md relative"
           :class="{ 'opacity-80': !bounty.active }"
           :style="{
             backgroundColor: bounty.active ? '#fff' : 'var(--color-background)',
