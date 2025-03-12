@@ -67,6 +67,12 @@
               Browse Offers
             </router-link> -->
             <router-link
+              to="/SearchBar"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+            >
+              User Search
+            </router-link>
+            <router-link
               to="/browse"
               class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >

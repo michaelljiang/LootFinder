@@ -31,7 +31,7 @@
     onAuthStateChanged,
   } from 'firebase/auth';
   import { auth, googleProvider, db } from '@/firebase';
-  import { doc, setDoc, getDoc } from 'firebase/firestore';
+  import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 
   export default {
     data() {
@@ -74,9 +74,17 @@
               uid: currentUser.uid,
               displayName: currentUser.displayName,
               email: currentUser.email,
+              photoURL: currentUser.photoURL, // Store the photoURL 
               joinDate: new Date(),
               admin: false,
             });
+          } else {
+            // Update existing user doc with photoURL if it doesn't exist
+            
+              await updateDoc(userDocRef, {
+                photoURL: currentUser.photoURL,
+              });
+            
           }
 
           this.$router.push('/browse'); // Redirect after login
