@@ -26,8 +26,8 @@
         />
       </div>
 
-      <div class="flex items-center justify-between bg-[#895129] px-4 py-2 mt-2">
-        <h1 class="text-lg font-bold text-gray-200 truncate flex-grow">${{ price }}</h1>
+      <div class="flex items-center justify-between bg-white px-4 py-2 mt-2">
+        <h1 class="text-lg font-bold text-nav truncate flex-grow">${{ price }}</h1>
         <div class="flex gap-4">
           <button
             @click="toggleDescription"

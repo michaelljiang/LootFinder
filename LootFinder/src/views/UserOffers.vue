@@ -1,19 +1,20 @@
 <!-- filepath: src/views/UserOffers.vue -->
 <template>
     <div class="container mx-auto p-6 min-h-screen">
-        <h1 class="text-2xl font-bold mb-4">Offers by {{ user.displayName }}</h1>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div v-for="item in offers" :key="item.id">
-            <OfferCard
-            :id="item.id"
-            :title="item.title"
-            :description="item.description"
-            :price="item.price"
-            :image="item.image"
-            :sellerId="item.sellerId"
-            />
+        <div class="justify-center text-center">
+            <h1 class="text-2xl font-bold mb-4">Offers by {{ user.displayName }}</h1>
         </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div v-for="item in offers" :key="item.id">
+                <OfferCard
+                :id="item.id"
+                :title="item.title"
+                :description="item.description"
+                :price="item.price"
+                :image="item.image"
+                :sellerId="item.sellerId"
+                />
+            </div>
         </div>
     </div>
 </template>

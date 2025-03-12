@@ -66,34 +66,35 @@
             >
               Browse Offers
             </router-link> -->
-            <router-link
-              to="/SearchBar"
-              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
-            >
-              User Search
-            </router-link>
+
             <router-link
               to="/browse"
-              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown text-sm transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Browse
             </router-link>
             <router-link
               to="/create"
-              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown text-sm transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Create Listing
             </router-link>
             <router-link
               to="/update-offers"
-              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown text-sm transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               My Offers
             </router-link>
             <router-link
+              to="/SearchBar"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown text-sm transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+            >
+              User Search
+            </router-link>
+            <router-link
               to="/inbox"
               @click.native="clearUnreadCounts"
-              class="relative px-3 py-2 mx-3 mt-2 text-logoBrown tracking-tight transition-colors font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="relative px-3 py-2 mx-3 mt-2 text-logoBrown text-sm tracking-tight transition-colors font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Inbox
               <span

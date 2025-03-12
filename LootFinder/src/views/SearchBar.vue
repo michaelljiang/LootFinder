@@ -5,7 +5,7 @@
                 v-model="query" 
                 type="text" 
                 placeholder="Search for users" 
-                class="w-full sm:w-96 md:w-[500px] lg:w-[600px] p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
+                class="w-full sm:w-96 md:w-[500px] lg:w-[600px] p-3 focus:border-2 bg-white rounded-lg shadow-md focus:outline-none focus:border-nav transition"
             />
         </div>
         <div class="flex flex-wrap justify-center items-stretch gap-8">
