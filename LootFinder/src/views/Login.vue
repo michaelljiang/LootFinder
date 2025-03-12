@@ -79,7 +79,7 @@
             });
           }
 
-          this.$router.push('/browse-offers'); // Redirect after login
+          this.$router.push('/browse'); // Redirect after login
         } catch (error) {
           console.error('Error logging in:', error.message);
           this.loading = false;
