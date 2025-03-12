@@ -4,12 +4,12 @@
     :zoom="15"
     :center="center"
     style="
-      width: 75%;
+      width: 80%;
       height: 400px;
       border-radius: 1rem;
       overflow: hidden;
       border-width: 2px;
-      border-color: #834848;
+      border-color: #ad5542;
     "
   >
     <Marker

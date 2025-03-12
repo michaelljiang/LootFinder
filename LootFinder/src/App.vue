@@ -1,6 +1,6 @@
 <template>
-  <main>
-    <Navbar />
+  <main class = "bg-lightbackground pt-4">
+    <Navbar/>
     <div class = "container mx-auto min-h-screen">
       <router-view></router-view>
     </div>

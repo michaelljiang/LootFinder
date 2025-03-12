@@ -1,6 +1,6 @@
 <template>
   <nav class="relative bg-lightbackground">
-    <div class="container px-6 py-4 mx-auto">
+    <div class="container px-6 py-3 mx-auto bg-white w-5/8 rounded-4xl shadow-lg">
       <div class="lg:flex lg:items-center lg:justify-center">
         <div class="flex items-center justify-between">
           <router-link to="/">
@@ -57,37 +57,37 @@
               ? 'translate-x-0 opacity-100 bg-lightbackground'
               : 'opacity-0 -translate-x-full',
           ]"
-          class="absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center"
+          class="absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:flex-row lg:items-center"
         >
-          <div class="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8">
+          <div class="flex flex-col -mx-6 lg:flex-row items-center lg:mx-8 justify-center">
             <!-- <router-link
               to="/browse-offers"
-              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Browse Offers
             </router-link> -->
             <router-link
               to="/browse"
-              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Browse
             </router-link>
             <router-link
               to="/create"
-              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Create Listing
             </router-link>
             <router-link
               to="/update-offers"
-              class="px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="px-3 py-2 mx-3 mt-2 text-logoBrown transition-colors tracking-tight font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               My Offers
             </router-link>
             <router-link
               to="/inbox"
               @click.native="clearUnreadCounts"
-              class="relative px-3 py-2 mx-3 mt-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
+              class="relative px-3 py-2 mx-3 mt-2 text-logoBrown tracking-tight transition-colors font-semibold duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white"
             >
               Inbox
               <span
@@ -112,7 +112,7 @@
             <template v-else>
               <router-link
                 to="/profile"
-                class="px-3 py-2 -mx-3 -my-2 text-black transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white flex items-center w-full lg:mx-1 lg:my-1"
+                class="px-3 py-2 -mx-3 -my-2 text-logoBrown transition-colors duration-300 transform rounded-md lg:mt-0 hover:bg-nav hover:text-white flex items-center w-full lg:mx-1 lg:my-1"
               >
                 <div
                   class="w-8 h-8 rounded-full border-2 border-gray-400 overflow-hidden flex-shrink-0"

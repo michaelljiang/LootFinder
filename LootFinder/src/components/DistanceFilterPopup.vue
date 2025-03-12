@@ -3,7 +3,7 @@
     <!-- Filter by Distance Button -->
     <button
       @click="showPopup = true"
-      class="w-full sm:w-auto p-2 bg-[#ea7643] text-white rounded shadow hover:bg-[#eb8e65] transition"
+      class="w-full sm:w-auto p-2 bg-nav text-white rounded shadow hover:bg-[#eb8e65] transition"
     >
       Filter by Distance
     </button>

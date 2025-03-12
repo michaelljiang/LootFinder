@@ -115,7 +115,7 @@
   }
 
   .profile-title {
-    color: var(--color-heading);
+    color: #331f15;
     font-size: 1.8rem;
     margin-bottom: 20px;
     font-weight: bold;

@@ -52,7 +52,7 @@
           if (user) {
             // User is already signed in, redirect to dashboard
             console.log('User already logged in:', user.displayName);
-            this.$router.push('/browse-offers');
+            this.$router.push('/browse');
           }
         });
       },
