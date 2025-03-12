@@ -89,14 +89,9 @@
   import { useRouter } from 'vue-router';
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
   import { ref, onMounted } from 'vue';
-  import DescriptionModal from './DescriptionModal.vue';
-
 
   export default {
     name: 'OfferCard',
-    components: {
-      DescriptionModal
-    },
     props: {
       id: { type: String, required: true }, // itemId
       title: { type: String, required: true },
