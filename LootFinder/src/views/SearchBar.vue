@@ -11,13 +11,12 @@
         <div class="flex flex-wrap justify-center items-stretch gap-8">
             <ProfileCard 
                 v-for="user in filteredUsers"
-                :key="user.id"
+                :id="user.id"
                 :displayName="user.displayName" 
                 :email="user.email" 
                 :title="user.title" 
-                :image="user.image" 
-                :sellerId="user.sellerId" 
-                :amount="100"
+                :image="user.photoURL" 
+                
             />
         </div>
     </div>

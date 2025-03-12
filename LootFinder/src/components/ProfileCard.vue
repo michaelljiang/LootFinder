@@ -17,10 +17,10 @@
         <!-- Action Buttons -->
         <div class="flex gap-3">
         <button
-            @click="openChat"
+            @click="seeOffers"
             class="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 transition"
         >
-            Message Seller
+            See Offers
         </button>
         <button
             @click="togglePayPalButton"
@@ -32,12 +32,15 @@
 
     <!-- PayPal Button Container -->
     <div v-if="showPayPalButton" class="mt-4">
-        <input 
-        v-model="amount" 
-        type="number" 
-        placeholder="Enter amount" 
-        class="w-full p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
-        />
+        <div class="flex items-center mb-4">
+            <span class="mr-2">$</span>
+            <input 
+            v-model="amount" 
+            type="number" 
+            placeholder="Enter amount" 
+            class="w-full p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
+            />
+        </div>
         <PayPalButton 
             :amount="amount" 
             currency="USD" 
@@ -48,7 +51,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import PayPalButton from './PayPalButton.vue';
 
 export default defineComponent({
@@ -77,24 +82,31 @@ export default defineComponent({
         type: String,
         required: true,
         },
-        amount: {
-        type: String,
-        required: true,
-        },
+        
     },
-    setup() {
+    setup(props) {
+        const router = useRouter();
+        const auth = getAuth();
+        const currentUser = ref(null);
         const showPayPalButton = ref(false);
+        const amount = ref('');
+
+        // Track authentication state
+        
 
         const togglePayPalButton = () => {
         showPayPalButton.value = !showPayPalButton.value;
         };
 
-        return { showPayPalButton, togglePayPalButton };
-    },
-    methods: {
-        openChat() {
-        this.$router.push(`/chat/${this.id}`);
-        },
+        const seeOffers = () => {
+            if (!props.id) {
+        console.error("User ID is undefined in ProfileCard.vue");
+    } else {
+        router.push(`/UserOffers/${props.id}`);
+    }
+        };
+
+        return { seeOffers, togglePayPalButton, showPayPalButton, amount };
     },
 });
 </script>
