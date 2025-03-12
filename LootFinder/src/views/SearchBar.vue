@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 sm:p-6 bg-gray-100 min-h-screen">
+    <div class="p-4 sm:p-6 min-h-screen">
         <div class="mb-6 flex flex-col sm:flex-row sm:justify-center sm:items-center">
             <input 
                 v-model="query" 
