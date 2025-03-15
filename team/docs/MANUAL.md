@@ -35,6 +35,7 @@ LootFinder is built for a diverse range of users, including:
      <img width="328" alt="image" src="https://github.com/user-attachments/assets/641f0f27-cbab-4532-a314-52ac89cc3c47" />
 
 3. **Create Offers or Bounties**
+
    - To create an offer or bounty for others to view, simply go to the navigation bar at the top of the screen and press the 'Create Listings' button.
    - Then choose between the two options of offer or bounty
    - For offers:
@@ -54,3 +55,13 @@ LootFinder is built for a diverse range of users, including:
 5. **Messaging Others**
    - To view your current conversations with other buyers/sellers, click on the `Inbox` button in the Navigation Bar.
    - If you have any conversations, it will be displayed here in a list, clicking on any of them will redirect you to a chat page between the two of you.
+6. **Finding Other Users**
+   - To look for other users, click on the `User Search` button in the Navigation Bar.
+   - Use the search bar to filter for specific users that you are looking for.
+   - To look at the offers that each user owns, simply click on the see offers button for that specific user, and it will lead you to a page containing all the offers they have.
+     <img width="194" alt="image" src="https://github.com/user-attachments/assets/07de6ff6-026a-414b-8a9f-9d7b96dca701" />
+
+7. **Paying Other Users**
+   - To pay another user, go to `User Search` and find the user you are looking for.
+   - Click on the `Pay With PayPal` button, which will create a dropdown where you can enter the amount you want to pay.
+    <img width="193" alt="Screenshot 2025-03-14 213610" src="https://github.com/user-attachments/assets/2fa3bdcb-85f3-4b85-bd00-0a5b51f28cc6" />
