@@ -5,7 +5,7 @@
         <img 
         :src="image" 
         alt="Profile Picture" 
-        class="w-28 h-28 rounded-full border-4 border-blue-500 shadow-md"
+        class="w-28 h-28 rounded-full border-4 border-nav shadow-md"
         />
 
         <!-- User Info -->
@@ -18,13 +18,13 @@
         <div class="flex gap-3">
         <button
             @click="seeOffers"
-            class="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 transition"
+            class="px-4 py-2 text-sm font-semibold text-white bg-lapis rounded-lg shadow-md hover:bg-lapisLight transition"
         >
             See Offers
         </button>
         <button
             @click="togglePayPalButton"
-            class="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600 transition"
+            class="px-4 py-2 text-sm font-semibold text-white bg-darkGreen rounded-lg shadow-md hover:bg-lightGreen transition"
         >
             Pay with PayPal
         </button>
